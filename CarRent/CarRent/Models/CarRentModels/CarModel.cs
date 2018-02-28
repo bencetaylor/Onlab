@@ -25,11 +25,13 @@ namespace CarRent.Models.CarRentModels
 
         public SiteModel Location { get; set; }
         public ICollection<ImageModel> Images { get; set; }
+        public ICollection<CommentModel> Comments { get; set; }
 
         public CarModel()
         {
             Location = new SiteModel();
             Images = new List<ImageModel>();
+            Comments = new List<CommentModel>();
         }
     }
 }
