@@ -10,6 +10,7 @@ namespace CarRent.Models.CarRentModels
     public class RentModel
     {
         [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int RentID { get; set; }
         public int CarID { get; set; }
         public int SiteID { get; set; }

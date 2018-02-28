@@ -8,6 +8,7 @@ namespace CarRent.Models.CarRentModels
     public class SiteModel
     {
         [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int SiteID { get; set; }
         public String Name { get; set; }
         public String Address { get; set; }

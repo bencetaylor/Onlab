@@ -29,6 +29,10 @@ namespace CarRent
                 catch (Exception ex)
                 {
                     var logger = services.GetRequiredService<ILogger<Program>>();
+                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                    System.Diagnostics.Debug.WriteLine(ex.InnerException);
+                    logger.LogError(ex.Message, "Error messege");
+                    logger.LogError(ex.InnerException, "Inner Exception");
                     logger.LogError(ex, "An error occurred while seeding the database.");
                 }
             }

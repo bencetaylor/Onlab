@@ -10,6 +10,7 @@ namespace CarRent.Models.CarRentModels
     public class ImageModel
     {
         [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int ImageID { get; set; }
         public String Name { get; set; }
         public byte[] Content { get; set; }

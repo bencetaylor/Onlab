@@ -19,22 +19,21 @@ namespace CarRent.Data
 
             var cars = new CarModel[]
             {
-            new CarModel{CarID=1, Brand="BMW 316i", NumberPlate="ABC123", Type="Sedan", Price=55000, Consuption=4, Doors=4, Passangers=5, Power=150, Trunk=400, State=CarState.Available},
-            new CarModel{CarID=2, Brand="BMW 330xd", NumberPlate="ABC123", Type="Sedan", Price=80000},
-            new CarModel{CarID=3, Brand="BMW 320d", NumberPlate="ABC123", Type="Sedan", Price=60000},
-            new CarModel{CarID=4, Brand="BMW 318d touring", NumberPlate="ABC123", Type="Combi", Price=70000},
+            new CarModel{Brand="BMW 316i", NumberPlate="ABC123", Type="Sedan", Price=55000, Consuption=4, Doors=4, Passangers=5, Power=150, Trunk=400, State=CarState.Available},
+            new CarModel{Brand="BMW 330xd", NumberPlate="ABC123", Type="Sedan", Price=80000},
+            new CarModel{Brand="BMW 320d", NumberPlate="ABC123", Type="Sedan", Price=60000},
+            new CarModel{Brand="BMW 318d touring", NumberPlate="ABC123", Type="Combi", Price=70000},
             };
             foreach (CarModel c in cars)
             {
                 context.Cars.Add(c);
             }
-            // A SaveChanges-nél nullReferenceException-t dob és nem tölti fel az adatbázist
             context.SaveChanges();
 
             var sites = new SiteModel[]
             {
-            new SiteModel{SiteID=1, Name="Site1", Address="Address1"},
-            new SiteModel{SiteID=2, Name="Site2", Address="Address2" },
+            new SiteModel{Name="Site1", Address="Address1"},
+            new SiteModel{Name="Site2", Address="Address2" },
             };
             foreach (SiteModel s in sites)
             {
