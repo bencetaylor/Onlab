@@ -5,6 +5,10 @@
     <UserSecretsId>aspnet-CarRent-DB5C1E85-9674-4136-B1DB-EFCD10B4A0C5</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Models\CarRentModels\Enums.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.0" />
