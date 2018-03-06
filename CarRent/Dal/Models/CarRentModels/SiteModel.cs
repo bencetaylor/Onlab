@@ -2,23 +2,21 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace CarRent.Models.CarRentModels
+namespace CarRent.DAL.Models.CarRentModels
 {
-    public class ImageModel
+    public class SiteModel
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int ImageID { get; set; }
+        public int SiteID { get; set; }
         public String Name { get; set; }
-        public byte[] Content { get; set; }
-        public CarModel Car { get; set; }
+        public String Address { get; set; }
+        public ICollection<CarModel> Cars { get; set; }
 
-        public ImageModel()
+        public SiteModel()
         {
-            Car = new CarModel();
+            Cars = new List<CarModel>();
         }
     }
 }

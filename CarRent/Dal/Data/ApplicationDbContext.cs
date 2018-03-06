@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using CarRent.DAL.Models;
+using CarRent.DAL.Models.CarRentModels;
 using Microsoft.EntityFrameworkCore;
-using CarRent.Models;
-using CarRent.Models.CarRentModels;
 
-namespace CarRent.Data
+namespace CarRent.DAL.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {

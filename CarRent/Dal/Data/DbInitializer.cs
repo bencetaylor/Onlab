@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using CarRent.DAL.Models.CarRentModels;
 using System.Linq;
-using System.Threading.Tasks;
-using CarRent.Models.CarRentModels;
-using CarRent.Models;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
-namespace CarRent.Data
+namespace CarRent.DAL.Data
 {
     public class DbInitializer
     {
@@ -55,8 +49,6 @@ namespace CarRent.Data
 
             }
             */
-
-            
 
             if (context.Cars.Any())
             {

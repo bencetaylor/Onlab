@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CarRent.Models.CarRentModels
+namespace CarRent.DAL.Models.CarRentModels
 {
     public enum CarState { Rented = 1, Available=2, InService=3 };
 

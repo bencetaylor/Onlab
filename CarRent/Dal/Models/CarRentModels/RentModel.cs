@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CarRent.Models.CarRentModels
+namespace CarRent.DAL.Models.CarRentModels
 {
     public enum InsuranceType { Basic = 1, Gold=2, Platinum=3 }
     public enum RentState { Approved = 1, Dismissed=2, Pending=3 }

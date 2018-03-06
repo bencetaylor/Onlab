@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CarRent.Models.CarRentModels
+namespace CarRent.DAL.Models.CarRentModels
 {
     public class CommentModel
     {
