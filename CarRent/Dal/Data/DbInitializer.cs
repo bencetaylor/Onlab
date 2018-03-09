@@ -1,59 +1,41 @@
-﻿using CarRent.DAL.Models.CarRentModels;
+﻿using CarRent.DAL.Models;
+using CarRent.DAL.Models.CarRentModels;
+using Microsoft.AspNetCore.Identity;
 using System.Linq;
 
 namespace CarRent.DAL.Data
 {
     public class DbInitializer
     {
-        public static void Initialize(ApplicationDbContext context)
+        public static void Initialize(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             context.Database.EnsureCreated();
 
-            /*
-            var UserManager = new UserManager<ApplicationUser>(context);
-            var roleManager = new RoleManager<IdentityRole<int>>();
-            //new UserStore<ApplicationUser>(context)
-            // In Startup iam creating first Admin Role and creating a default Admin User     
-            if (!roleManager.RoleExists("Admin"))
-            {
-
-                // first we create Admin rool    
-                var role = new IdentityRole();
-                role.Name = "Admin";
-                roleManager.Create(role);
-
-                //Here we create a Admin super user who will maintain the website                   
-
-                var user = new ApplicationUser();
-                user.UserName = "Admin";
-                user.Email = "admin@gmail.com";
-
-                string userPWD = "Ab-1234";
-
-                var chkUser = UserManager.Create(user, userPWD);
-
-                //Add default User to Role Admin    
-                if (chkUser.Succeeded)
-                {
-                    var result1 = UserManager.AddToRole(user.Id, "Admin");
-
-                }
-            }
-
-            // creating Creating Manager role     
-            if (!roleManager.RoleExists("Regular"))
-            {
-                var role = new IdentityRole();
-                role.Name = "Regular";
-                roleManager.Create(role);
-
-            }
-            */
+            
 
             if (context.Cars.Any())
             {
                 return;
             }
+
+            var roles = new IdentityRole[]
+            {
+                new IdentityRole{Id="admin", Name="ADMIN"},
+                new IdentityRole{Id="user", Name="USER"}
+            };
+            foreach (IdentityRole r in roles)
+            {
+                context.Roles.Add(r);
+            }
+
+
+            var user = new ApplicationUser();
+            user.UserName = "bencetaylor@gmail.com";
+            user.Email = "bencetaylor@gmail.com";
+
+            string userPWD = "Admin1234";
+
+            userManager.CreateAsync(user, userPWD);
 
             var cars = new CarModel[]
             {

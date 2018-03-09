@@ -1,16 +1,12 @@
-﻿using System;
+﻿using CarRent.DAL.Models.CarRentModels;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
-namespace CarRent.DAL.Models.CarRentModels
+namespace CarRent.DAL.Models.DTOs
 {
-    public enum CarState { Rented = 1, Available=2, InService=3 };
-
-    public class CarModel
+    class CarDetailsDTO
     {
-        [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int CarID { get; set; }
         public String NumberPlate { get; set; }
         public String Type { get; set; }
@@ -28,12 +24,5 @@ namespace CarRent.DAL.Models.CarRentModels
         public SiteModel Location { get; set; }
         public ICollection<ImageModel> Images { get; set; }
         public ICollection<CommentModel> Comments { get; set; }
-
-        public CarModel()
-        {
-            Location = new SiteModel();
-            Images = new List<ImageModel>();
-            Comments = new List<CommentModel>();
-        }
     }
 }
