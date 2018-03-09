@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CarRent.Models;
+using CarRent.DAL.Models;
 
 namespace CarRent.Controllers
 {
