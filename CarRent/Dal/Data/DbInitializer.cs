@@ -10,9 +10,7 @@ namespace CarRent.DAL.Data
         public static void Initialize(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             context.Database.EnsureCreated();
-
             
-
             if (context.Cars.Any())
             {
                 return;
@@ -29,10 +27,12 @@ namespace CarRent.DAL.Data
             }
 
 
-            var user = new ApplicationUser();
-            user.UserName = "bencetaylor@gmail.com";
-            user.Email = "bencetaylor@gmail.com";
-
+            var user = new ApplicationUser
+            {
+                UserName = "bencetaylor@gmail.com",
+                Email = "bencetaylor@gmail.com"
+            };
+            
             string userPWD = "Admin1234";
 
             userManager.CreateAsync(user, userPWD);

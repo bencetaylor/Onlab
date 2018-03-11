@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using CarRent.DAL.Models.CarRentModels;
+using System.Linq;
 
 namespace CarRent.DAL.Models.DTOs
 {
