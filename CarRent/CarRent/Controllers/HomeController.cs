@@ -30,6 +30,12 @@ namespace CarRent.Controllers
             return View();
         }
 
+        public IActionResult Cars()
+        {
+            ViewData["Message"] = "Admin view cars page.";
+            return View("../Admin/Cars");
+        }
+
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
