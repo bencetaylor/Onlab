@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CarRent.DAL.Models.DTOs
 {
-    class SiteDTO
+    public class SiteDTO
     {
         public int SiteID { get; set; }
         public String Name { get; set; }

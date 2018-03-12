@@ -6,12 +6,14 @@ using System.Linq;
 
 namespace CarRent.DAL.Models.DTOs
 {
-    class CarDTO
+    public class CarDTO
     {
         public int ID { get; set; }
         public int Price { get; set; }
         public String Type { get; set; }
         public String Brand { get; set; }
+        public String Location { get; set; }
+        public String Plate { get; set; }
 
         public ImageModel Image { get; set; }
     }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CarRent.DAL.Models.DTOs
 {
-    class RentDTO
+    public class RentDTO
     {
         public int ID { get; set; }
         public CarModel Car { get; set; }

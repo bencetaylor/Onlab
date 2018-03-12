@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CarRent.DAL.Data;
-using CarRent.DAL.Models.CarRentModels;
+﻿using System.Collections.Generic;
+using CarRent.DAL.Models.DTOs;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace CarRent.Models.DataViewModels
 {
     public class CarViewModel
     {
-        public IList<CarModel> Cars;
+        public List<CarDTO> Cars;
     }
 }

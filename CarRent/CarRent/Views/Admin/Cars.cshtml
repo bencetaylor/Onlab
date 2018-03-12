@@ -1,4 +1,6 @@
 ﻿
+@model CarRent.Models.DataViewModels.CarViewModel
+
 @{
     ViewData["Title"] = "Cars";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -6,3 +8,50 @@
 
 <h2>Cars</h2>
 
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Brand
+                </th>
+                <th>
+                    Location
+                </th>
+                <th>
+                    Plate
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Type
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Cars)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Brand)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Location)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Plate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

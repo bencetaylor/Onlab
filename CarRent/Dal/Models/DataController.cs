@@ -1,5 +1,6 @@
 ﻿using CarRent.DAL.Data;
 using CarRent.DAL.Models.DTOs;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,9 @@ using System.Text;
 
 namespace CarRent.DAL.Models
 {
-    class DataController
+    public class DataController
     {
-        private readonly ApplicationDbContext context;
+        public ApplicationDbContext context;
 
         public DataController(ApplicationDbContext _context)
         {
@@ -26,6 +27,8 @@ namespace CarRent.DAL.Models
                            Price = c.Price,
                            Type = c.Type,
                            Brand = c.Brand,
+                           Location = c.Location.Address,
+                           Plate = c.NumberPlate,
                            Image = c.Images.First()
                        };
             return cars;

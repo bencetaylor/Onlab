@@ -4,15 +4,33 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using CarRent.DAL.Data;
+using CarRent.DAL.Models;
+using CarRent.Models.DataViewModels;
 
 namespace CarRent.Controllers
 {
     public class CarController : Controller
     {
+        private readonly ApplicationDbContext context;
+        private readonly DataController data;
+        private CarViewModel model;
+
+        public CarController(ApplicationDbContext _context)
+        {
+            context = _context;
+            data = new DataController(context);
+            model = new CarViewModel();
+        }
+
         // GET: Car
         public ActionResult Index()
         {
-            var user = new DAL.Models.ApplicationUser();
+            foreach(var c in  data.GetCars())
+            {
+                model.Cars.Add(c);
+            }
+            
             return View();
         }
 
