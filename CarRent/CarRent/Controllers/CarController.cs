@@ -20,18 +20,20 @@ namespace CarRent.Controllers
         {
             context = _context;
             data = new DataController(context);
-            model = new CarViewModel();
+            //model = new CarViewModel();
         }
 
         // GET: Car
         public ActionResult Index()
         {
-            foreach(var c in  data.GetCars())
+            model = new CarViewModel();
+            var cars = data.GetCars();
+            foreach(var c in  cars)
             {
                 model.Cars.Add(c);
             }
             
-            return View();
+            return View(model);
         }
 
         // GET: Car/Details/5

@@ -13,7 +13,7 @@ namespace CarRent.DAL.Models
         public ApplicationDbContext context;
 
         public DataController(ApplicationDbContext _context)
-        {
+        { 
             context = _context;
         }
 
