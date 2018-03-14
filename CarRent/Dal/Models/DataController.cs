@@ -19,7 +19,9 @@ namespace CarRent.DAL.Models
 
         // Manage Cars
         public IQueryable<CarDTO> GetCars()
-        {
+        {         
+            // TODO add startup.cs to DAL project - load db context
+            //context = new ApplicationDbContext()
             var cars = from c in context.Cars
                        select new CarDTO()
                        {
