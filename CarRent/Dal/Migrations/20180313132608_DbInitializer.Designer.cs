@@ -299,7 +299,7 @@ namespace CarRent.DAL.Migrations
 
             modelBuilder.Entity("CarRent.DAL.Models.CarRentModels.CarModel", b =>
                 {
-                    b.HasOne("CarRent.DAL.Models.CarRentModels.SiteModel", "Location")
+                    b.HasOne("CarRent.DAL.Models.CarRentModels.SiteModel", "Site")
                         .WithMany("Cars")
                         .HasForeignKey("LocationSiteID");
                 });

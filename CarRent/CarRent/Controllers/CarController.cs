@@ -37,7 +37,13 @@ namespace CarRent.Controllers
         // GET: Car/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            model = new CarViewModel();
+            var car = data.GetCar(id);
+
+            if (car == null)
+                return NotFound();
+            model.CarFullDetail = car;
+            return View("../Admin/CarDetail", model);
         }
 
         // GET: Car/Create
@@ -66,7 +72,13 @@ namespace CarRent.Controllers
         // GET: Car/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            model = new CarViewModel();
+            var car = data.GetCar(id);
+
+            if (car == null)
+                return NotFound();
+            model.CarFullDetail = car;
+            return View("../Admin/CarEdit", model);
         }
 
         // POST: Car/Edit/5

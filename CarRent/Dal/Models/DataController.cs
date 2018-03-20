@@ -24,10 +24,7 @@ namespace CarRent.DAL.Models
         // Manage Cars
         public IList<CarDTO> GetCars()
         {
-            // TODO add startup.cs to DAL project - load db context
-            //context = new ApplicationDbContext()
             var list = context.Cars.ToList();
-
             var carlist = new List<CarDTO>();
 
             foreach (var c in list)
@@ -37,7 +34,8 @@ namespace CarRent.DAL.Models
                 car.Price = c.Price;
                 car.Type = c.Type ?? "none";
                 car.Brand = c.Brand ?? "none";
-                car.Location = "none";//c.Location.Address ?? "none";
+                // TODO - site shows as null???
+                car.Location = "not working";//c.Site.Address;
                 car.Plate = c.NumberPlate;
                 //car.Image = c.Images.First() ?? null;
 
@@ -45,22 +43,9 @@ namespace CarRent.DAL.Models
             }
 
             return carlist;
-
-            //var cars = from c in context.Cars
-            //           select new CarDTO()
-            //           {
-            //               ID = c.CarID,
-            //               Price = c.Price,
-            //               Type = c.Type,
-            //               Brand = c.Brand,
-            //               Location = c.Location.Address,
-            //               Plate = c.NumberPlate,
-            //               Image = c.Images.First()
-            //           };
-            //return cars;
         }
 
-        public IQueryable<CarDetailsDTO> GetCarsDetailed()
+        public IList<CarDetailsDTO> GetCarsDetailed()
         {
             var cars = from c in context.Cars
                        select new CarDetailsDTO()
@@ -70,7 +55,7 @@ namespace CarRent.DAL.Models
                            Consuption = c.Consuption,
                            Description = c.Description,
                            Doors = c.Doors,
-                           Location = c.Location,
+                           Location = c.Site,
                            NumberPlate = c.NumberPlate,
                            Passangers = c.Passangers,
                            Power = c.Power,
@@ -79,7 +64,7 @@ namespace CarRent.DAL.Models
                            Trunk = c.Trunk,
                            Type = c.Type
                        };
-            return cars;
+            return cars.ToList();
         }
 
         public IQueryable<CarDetailsDTO> GetCarsWithFullDetail()
@@ -94,7 +79,7 @@ namespace CarRent.DAL.Models
                            Description = c.Description,
                            Doors = c.Doors,
                            Images = c.Images,
-                           Location = c.Location,
+                           Location = c.Site,
                            NumberPlate = c.NumberPlate,
                            Passangers = c.Passangers,
                            Power = c.Power,
@@ -106,7 +91,7 @@ namespace CarRent.DAL.Models
             return cars;
         }
 
-        public IQueryable<CarDetailsDTO> GetCar(int id)
+        public CarDetailsDTO GetCar(int id)
         {
             var car = from c in context.Cars
                       where c.CarID == id
@@ -118,8 +103,9 @@ namespace CarRent.DAL.Models
                           Consuption = c.Consuption,
                           Description = c.Description,
                           Doors = c.Doors,
-                          Images = c.Images,
-                          Location = c.Location,
+                          //Images = c.Images,
+                          // TODO Location not working 
+                          //Location = c.Site,
                           NumberPlate = c.NumberPlate,
                           Passangers = c.Passangers,
                           Power = c.Power,
@@ -128,7 +114,7 @@ namespace CarRent.DAL.Models
                           Trunk = c.Trunk,
                           Type = c.Type
                       };
-            return car;
+            return car.First();
         }
 
         // Manage Rents
@@ -151,7 +137,7 @@ namespace CarRent.DAL.Models
                        select new RentDetailsDTO()
                        {
                            RentID = r.RentID,
-                           CarID = r.CarID,
+                           //CarID = r.CarID,
                            Car = r.Car,
                            Insurance = r.Insurance,
                            User = r.User,
@@ -159,7 +145,7 @@ namespace CarRent.DAL.Models
                            RentEnds = r.RentEnds,
                            RentStart = r.RentStart,
                            Site = r.Site,
-                           SiteID = r.SiteID,
+                           //SiteID = r.SiteID,
                            State = r.State
                        };
             return rent;
@@ -172,7 +158,7 @@ namespace CarRent.DAL.Models
                        select new RentDetailsDTO()
                        {
                            RentID = r.RentID,
-                           CarID = r.CarID,
+                           //CarID = r.CarID,
                            Car = r.Car,
                            Insurance = r.Insurance,
                            User = r.User,
@@ -180,7 +166,7 @@ namespace CarRent.DAL.Models
                            RentEnds = r.RentEnds,
                            RentStart = r.RentStart,
                            Site = r.Site,
-                           SiteID = r.SiteID,
+                          // SiteID = r.SiteID,
                            State = r.State
                        };
             return rent;

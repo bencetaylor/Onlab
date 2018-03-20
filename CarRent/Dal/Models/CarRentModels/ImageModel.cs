@@ -12,13 +12,15 @@ namespace CarRent.DAL.Models.CarRentModels
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int ImageID { get; set; }
+        //public int CarID { get; set; }
+        public CarModel Car { get; set; }
+
         public String Name { get; set; }
         public byte[] Content { get; set; }
-        public CarModel Car { get; set; }
 
         public ImageModel()
         {
-            Car = new CarModel();
+            Car = null;
         }
     }
 }

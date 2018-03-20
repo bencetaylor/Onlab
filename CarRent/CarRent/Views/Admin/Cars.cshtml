@@ -49,7 +49,10 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Type)
                     </td>
-                    <td></td>
+                    <td> 
+                        <a asp-area="" asp-controller="Car" asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
+                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                    </td>
                 </tr>
             }
         </tbody>

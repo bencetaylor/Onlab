@@ -12,6 +12,13 @@ namespace CarRent.DAL.Models.CarRentModels
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int CarID { get; set; }
+        //public int SiteID { get; set; }
+     
+        public SiteModel Site { get; set; }
+
+        public ICollection<ImageModel> Images { get; set; }
+        public ICollection<CommentModel> Comments { get; set; }
+
         public String NumberPlate { get; set; }
         public String Type { get; set; }
         public String Brand { get; set; }
@@ -22,16 +29,11 @@ namespace CarRent.DAL.Models.CarRentModels
         public int Trunk { get; set; }
         public int Power { get; set; }
         public String Description { get; set; }
-
         public CarState State { get; set; }
-
-        public SiteModel Location { get; set; }
-        public ICollection<ImageModel> Images { get; set; }
-        public ICollection<CommentModel> Comments { get; set; }
 
         public CarModel()
         {
-            Location = null;
+            //Site = null;
             Images = null;
             Comments = null;
         }

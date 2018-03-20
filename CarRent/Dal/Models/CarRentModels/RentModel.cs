@@ -12,8 +12,9 @@ namespace CarRent.DAL.Models.CarRentModels
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int RentID { get; set; }
-        public int CarID { get; set; }
-        public int SiteID { get; set; }
+        //public int CarID { get; set; }
+        //public int SiteID { get; set; }
+        //public int UserID { get; set; }
         public DateTime RentStart { get; set; }
         public DateTime RentEnds { get; set; }
         public int Price { get; set; }
@@ -27,9 +28,13 @@ namespace CarRent.DAL.Models.CarRentModels
 
         public RentModel()
         {
-            User = new ApplicationUser();
-            Car = new CarModel();
-            Site = new SiteModel();
+            //User = new ApplicationUser();
+            //Car = new CarModel();
+            //Site = new SiteModel();
+
+            User = null;
+            Car = null;
+            Site = null;
         }
     }
 }
