@@ -31,27 +31,27 @@
             </tr>
         </thead>
         <tbody>
-           <!-- foreach (var item in Model.Cars)
-            {-->
+            @foreach (var item in Model.Cars)
+            {
                 <tr>
                     <td>
-                        Html.DisplayFor(modelItem => item.Brand)
+                        @Html.DisplayFor(modelItem => item.Brand)
                     </td>
                     <td>
-                        Html.DisplayFor(modelItem => item.Location)
+                        @Html.DisplayFor(modelItem => item.Location)
                     </td>
                     <td>
-                        Html.DisplayFor(modelItem => item.Plate)
+                        @Html.DisplayFor(modelItem => item.Plate)
                     </td>
                     <td>
-                        Html.DisplayFor(modelItem => item.Price)
+                        @Html.DisplayFor(modelItem => item.Price)
                     </td>
                     <td>
-                        Html.DisplayFor(modelItem => item.Type)
+                        @Html.DisplayFor(modelItem => item.Type)
                     </td>
                     <td></td>
                 </tr>
-            
+            }
         </tbody>
     </table>
 </div>

@@ -12,17 +12,13 @@ namespace CarRent.Controllers
 {
     public class CarController : Controller
     {
-        private readonly ApplicationDbContext context;
         private readonly DataController data;
         private CarViewModel model;
 
-
         // TODO context only in DAL project
-        public CarController(ApplicationDbContext _context)
+        public CarController()
         {
-            context = _context;
-            data = new DataController(context);
-            //model = new CarViewModel();
+            data = new DataController();
         }
 
         // GET: Car
@@ -35,7 +31,7 @@ namespace CarRent.Controllers
                 model.Cars.Add(c);
             }
             
-            return View(model);
+            return View("../Admin/Cars",model);
         }
 
         // GET: Car/Details/5

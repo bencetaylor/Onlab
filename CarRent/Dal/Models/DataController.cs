@@ -1,6 +1,7 @@
 ﻿using CarRent.DAL.Data;
 using CarRent.DAL.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,28 +13,51 @@ namespace CarRent.DAL.Models
     {
         public ApplicationDbContext context;
 
-        public DataController(ApplicationDbContext _context)
-        { 
-            context = _context;
+        public DataController()
+        {
+            var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=aspnet-CarRent-DB5C1E85-9674-4136-B1DB-EFCD10B4A0C5;Trusted_Connection=True;MultipleActiveResultSets=true");
+            
+            context = new ApplicationDbContext(optionsBuilder.Options);
         }
 
         // Manage Cars
-        public IQueryable<CarDTO> GetCars()
-        {         
+        public IList<CarDTO> GetCars()
+        {
             // TODO add startup.cs to DAL project - load db context
             //context = new ApplicationDbContext()
-            var cars = from c in context.Cars
-                       select new CarDTO()
-                       {
-                           ID = c.CarID,
-                           Price = c.Price,
-                           Type = c.Type,
-                           Brand = c.Brand,
-                           Location = c.Location.Address,
-                           Plate = c.NumberPlate,
-                           Image = c.Images.First()
-                       };
-            return cars;
+            var list = context.Cars.ToList();
+
+            var carlist = new List<CarDTO>();
+
+            foreach (var c in list)
+            {
+                var car = new CarDTO();
+                car.ID = c.CarID;
+                car.Price = c.Price;
+                car.Type = c.Type ?? "none";
+                car.Brand = c.Brand ?? "none";
+                car.Location = "none";//c.Location.Address ?? "none";
+                car.Plate = c.NumberPlate;
+                //car.Image = c.Images.First() ?? null;
+
+                carlist.Add(car);
+            }
+
+            return carlist;
+
+            //var cars = from c in context.Cars
+            //           select new CarDTO()
+            //           {
+            //               ID = c.CarID,
+            //               Price = c.Price,
+            //               Type = c.Type,
+            //               Brand = c.Brand,
+            //               Location = c.Location.Address,
+            //               Plate = c.NumberPlate,
+            //               Image = c.Images.First()
+            //           };
+            //return cars;
         }
 
         public IQueryable<CarDetailsDTO> GetCarsDetailed()

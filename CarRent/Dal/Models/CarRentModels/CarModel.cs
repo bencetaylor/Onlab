@@ -31,9 +31,9 @@ namespace CarRent.DAL.Models.CarRentModels
 
         public CarModel()
         {
-            Location = new SiteModel();
-            Images = new List<ImageModel>();
-            Comments = new List<CommentModel>();
+            Location = null;
+            Images = null;
+            Comments = null;
         }
     }
 }
