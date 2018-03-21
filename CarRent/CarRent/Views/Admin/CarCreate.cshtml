@@ -1,0 +1,82 @@
+﻿@model CarRent.Models.DataViewModels.CarViewModel
+
+@{
+    ViewData["Title"] = "CarCreate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>CarCreate</h2>
+
+<h4>CarViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CarFullDetail.CarID" />
+            <div class="row">
+                <div class="form-group">
+                    <label asp-for="CarFullDetail.Brand" class="control-label"></label>
+                    <input asp-for="CarFullDetail.Brand" class="form-control" />
+                    <span asp-validation-for="CarFullDetail.Brand" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CarFullDetail.Type" class="control-label"></label>
+                    <input asp-for="CarFullDetail.Type" class="form-control" />
+                    <span asp-validation-for="CarFullDetail.Type" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CarFullDetail.Location" class="control-label"></label>
+                    <input asp-for="CarFullDetail.Location" class="form-control" />
+                    <span asp-validation-for="CarFullDetail.Location" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CarFullDetail.NumberPlate" class="control-label"></label>
+                    <input asp-for="CarFullDetail.NumberPlate" class="form-control" />
+                    <span asp-validation-for="CarFullDetail.NumberPlate" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CarFullDetail.Power" class="control-label"></label>
+                    <input asp-for="CarFullDetail.Power" class="form-control" />
+                    <span asp-validation-for="CarFullDetail.Power" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CarFullDetail.Doors" class="control-label"></label>
+                    <input asp-for="CarFullDetail.Doors" class="form-control" />
+                    <span asp-validation-for="CarFullDetail.Doors" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CarFullDetail.Price" class="control-label"></label>
+                    <input asp-for="CarFullDetail.Price" class="form-control" />
+                    <span asp-validation-for="CarFullDetail.Price" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CarFullDetail.Consuption" class="control-label"></label>
+                    <input asp-for="CarFullDetail.Consuption" class="form-control" />
+                    <span asp-validation-for="CarFullDetail.Consuption" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CarFullDetail.Description" class="control-label"></label>
+                    <input asp-for="CarFullDetail.Description" class="form-control" />
+                    <span asp-validation-for="CarFullDetail.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CarFullDetail.Images" class="control-label"></label>
+                    <input asp-for="CarFullDetail.Images" class="form-control" />
+                    <span asp-validation-for="CarFullDetail.Images" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

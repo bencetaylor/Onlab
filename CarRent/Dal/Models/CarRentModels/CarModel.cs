@@ -33,7 +33,7 @@ namespace CarRent.DAL.Models.CarRentModels
 
         public CarModel()
         {
-            //Site = null;
+            Site = null;
             Images = null;
             Comments = null;
         }

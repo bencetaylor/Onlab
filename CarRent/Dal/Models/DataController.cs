@@ -117,6 +117,38 @@ namespace CarRent.DAL.Models
             return car.First();
         }
 
+        public void DeleteCar(int id)
+        {
+            var car = context.Cars.Find(id);
+            context.Cars.Remove(car);
+            context.SaveChanges();
+        }
+
+        public void CreateCar(CarDetailsDTO c)
+        {
+            var carmodel = new CarRentModels.CarModel()
+            {
+                Brand = c.Brand,
+                CarID = c.CarID,
+                //Comments = c.Comments,
+                Consuption = c.Consuption,
+                Description = c.Description,
+                Doors = c.Doors,
+                //Images = c.Images,
+                // TODO Location not working 
+                //Location = c.Site,
+                NumberPlate = c.NumberPlate,
+                Passangers = c.Passangers,
+                Power = c.Power,
+                Price = c.Price,
+                State = c.State,
+                Trunk = c.Trunk,
+                Type = c.Type
+            };
+            context.Cars.Add(carmodel);
+            context.SaveChanges();
+        }
+
         // Manage Rents
         public IQueryable<RentDTO> GetRents()
         {
@@ -173,8 +205,11 @@ namespace CarRent.DAL.Models
         }
 
         // Manage Sites
-        public IQueryable<SiteDTO> GetSites()
+        public IList<SiteDTO> GetSites()
         {
+            var list = context.Sites.ToList();
+            var sitelist = new List<SiteDTO>();
+
             var sites = from s in context.Sites
                         select new SiteDTO()
                         {
@@ -182,7 +217,7 @@ namespace CarRent.DAL.Models
                             Address = s.Address,
                             Name = s.Name
                         };
-            return sites;
+            return sites.ToList();
         }
 
         public IQueryable<SiteDTO> GetSite(int id)
@@ -197,6 +232,13 @@ namespace CarRent.DAL.Models
                            Cars = s.Cars
                        };
             return site;
+        }
+
+        public void DeleteSite(int id)
+        {
+            var site = context.Sites.Find(id);
+            context.Sites.Remove(site);
+            context.SaveChanges();
         }
     }
 }

@@ -51,10 +51,13 @@
                     </td>
                     <td> 
                         <a asp-area="" asp-controller="Car" asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                        <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                        <a asp-area="" asp-controller="Car" asp-action="Delete" asp-route-id="@item.ID">Delete</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+    <div>
+        <a asp-area="" asp-controller="Car" asp-action="Create" class="btn btn-light">Create</a>
+    </div>
 </div>
