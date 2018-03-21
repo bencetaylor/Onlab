@@ -11,7 +11,7 @@ namespace CarRent.Models.DataViewModels
         public List<SiteDTO> Sites;
         public SiteDTO SiteDetails;
 
-        SiteViewModel()
+        public SiteViewModel()
         {
             Sites = new List<SiteDTO>();
             SiteDetails = new SiteDTO();

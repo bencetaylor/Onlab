@@ -8,15 +8,6 @@
 {
     <form asp-area="" asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-nav mr-2 navbar-right">
         <ul class="navbar-nav mr-auto navbar-right">
-            <!--if (UserManager.Get)
-            {
-                <li class="nav-item">
-                    <a asp-area="" asp-controller="Home" asp-action="Cars" class="nav-link">Cars</a>
-                </li>
-            }-->
-            <li class="nav-item">
-                <a asp-area="" asp-controller="Car" asp-action="Index" class="nav-link">Cars</a>
-            </li>
             <li class="nav-item">
                 <a asp-area="" asp-controller="Manage" class="nav-link" asp-action="Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
             </li>
