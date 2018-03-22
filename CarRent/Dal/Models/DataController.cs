@@ -24,31 +24,27 @@ namespace CarRent.DAL.Models
         // Manage Cars
         public IList<CarDTO> GetCars()
         {
-            var list = context.Cars.ToList();
-            var carlist = new List<CarDTO>();
-
-            foreach (var c in list)
-            {
-                var car = new CarDTO();
-                car.ID = c.CarID;
-                car.Price = c.Price;
-                car.Type = c.Type ?? "none";
-                car.Brand = c.Brand ?? "none";
-                // TODO - site shows as null???
-                car.Location = "not working";//c.Site.Address;
-                car.Plate = c.NumberPlate;
-                //car.Image = c.Images.First() ?? null;
-
-                carlist.Add(car);
-            }
-
-            return carlist;
+            var cars = context.Cars
+                .Include( c => c.Site)
+                .Select(c => new CarDTO
+                {
+                    ID = c.CarID,
+                    Price = c.Price,
+                    Type = c.Type ?? "none",
+                    Brand = c.Brand ?? "none",
+                    // TODO - site shows as null???
+                    Location = c.Site.Address,
+                    Plate = c.NumberPlate,
+                    //car.Image = c.Images.First() ?? null;
+                }).ToList();
+            
+            return cars;
         }
 
         public IList<CarDetailsDTO> GetCarsDetailed()
         {
-            var cars = from c in context.Cars
-                       select new CarDetailsDTO()
+            var cars = (from c in context.Cars
+                       select new CarDetailsDTO
                        {
                            Brand = c.Brand,
                            CarID = c.CarID,
@@ -63,8 +59,8 @@ namespace CarRent.DAL.Models
                            State = c.State,
                            Trunk = c.Trunk,
                            Type = c.Type
-                       };
-            return cars.ToList();
+                       }).ToList();
+            return cars;
         }
 
         public IQueryable<CarDetailsDTO> GetCarsWithFullDetail()
