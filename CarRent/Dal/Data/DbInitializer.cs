@@ -10,7 +10,7 @@ namespace CarRent.DAL.Data
     public class DbInitializer
     {
 
-        public static void Initialize(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public static void Initialize(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             context.Database.EnsureCreated();
             
@@ -53,7 +53,8 @@ namespace CarRent.DAL.Data
             }
             context.SaveChanges();
 
-            var user = new ApplicationUser
+           
+            var admin = new ApplicationUser
             {
                 UserName = "bencetaylor@gmail.com",
                 Email = "bencetaylor@gmail.com"
@@ -61,8 +62,43 @@ namespace CarRent.DAL.Data
 
             string userPWD = "Admin1234";
 
+            userManager.CreateAsync(admin, userPWD);
+            userManager.AddToRoleAsync(admin, roles[0].Id);
+
+            var user = new ApplicationUser
+            {
+                UserName = "example@gmail.com",
+                Email = "example@gmail.com"
+            };
+
+            userPWD = "User1234";
+
             userManager.CreateAsync(user, userPWD);
             userManager.AddToRoleAsync(user, roles[1].Id);
+
+
+           // var rl = roleManager.Roles.Select(r => r.Name).ToList();
+
+            var userRole = new IdentityUserRole<string>()
+            {
+                RoleId = roles[0].Id,
+                UserId = admin.Id
+            };
+
+            context.UserRoles.Add(userRole);
+
+            //userRole = new IdentityUserRole<string>()
+            //{
+            //    RoleId = roles[1].Id,
+            //    UserId = user.Id
+            //};
+
+            //context.UserRoles.Add(userRole);
+
+            context.SaveChanges();
+
+
+
 
 
             var site1 = new SiteModel { Name = "Site1", Address = "Address1" };

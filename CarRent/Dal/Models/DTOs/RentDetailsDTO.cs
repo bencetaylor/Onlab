@@ -8,9 +8,7 @@ namespace CarRent.DAL.Models.DTOs
     public class RentDetailsDTO
     {
         public int RentID { get; set; }
-        public int CarID { get; set; }
-        public int SiteID { get; set; }
-        public DateTime RentStart { get; set; }
+        public DateTime RentStarts { get; set; }
         public DateTime RentEnds { get; set; }
         public int Price { get; set; }
 

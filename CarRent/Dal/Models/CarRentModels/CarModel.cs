@@ -12,8 +12,6 @@ namespace CarRent.DAL.Models.CarRentModels
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int CarID { get; set; }
-        //public int SiteID { get; set; }
-     
         public SiteModel Site { get; set; }
 
         public ICollection<ImageModel> Images { get; set; }
@@ -34,8 +32,8 @@ namespace CarRent.DAL.Models.CarRentModels
         public CarModel()
         {
             Site = null;
-            Images = null;
-            Comments = null;
+            Images = new List<ImageModel>();
+            Comments = new List<CommentModel>();
         }
     }
 }

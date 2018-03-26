@@ -25,6 +25,7 @@ namespace CarRent.Controllers
         // GET: Car
         public ActionResult Index()
         {
+            var user = 
             model = new CarViewModel();
             var cars = data.GetCars();
             foreach(var c in  cars)
@@ -65,6 +66,7 @@ namespace CarRent.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
         {
+            // TODO - check users permission to create (only admin can create)
             try
             {
                 // TODO: Add insert logic here
@@ -123,6 +125,7 @@ namespace CarRent.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
+            // TODO - check users permissions to delete anything (only admin can delete)
             data.DeleteCar(id);
             return RedirectToAction("Index");
         }

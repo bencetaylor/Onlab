@@ -49,7 +49,7 @@ namespace CarRent.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"Unable to load user with CarID '{_userManager.GetUserId(User)}'.");
             }
 
             var model = new IndexViewModel
@@ -76,7 +76,7 @@ namespace CarRent.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"Unable to load user with CarID '{_userManager.GetUserId(User)}'.");
             }
 
             var email = user.Email;
@@ -85,7 +85,7 @@ namespace CarRent.Controllers
                 var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
                 if (!setEmailResult.Succeeded)
                 {
-                    throw new ApplicationException($"Unexpected error occurred setting email for user with ID '{user.Id}'.");
+                    throw new ApplicationException($"Unexpected error occurred setting email for user with CarID '{user.Id}'.");
                 }
             }
 
@@ -95,7 +95,7 @@ namespace CarRent.Controllers
                 var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
                 if (!setPhoneResult.Succeeded)
                 {
-                    throw new ApplicationException($"Unexpected error occurred setting phone number for user with ID '{user.Id}'.");
+                    throw new ApplicationException($"Unexpected error occurred setting phone number for user with CarID '{user.Id}'.");
                 }
             }
 
@@ -115,7 +115,7 @@ namespace CarRent.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"Unable to load user with CarID '{_userManager.GetUserId(User)}'.");
             }
 
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -133,7 +133,7 @@ namespace CarRent.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"Unable to load user with CarID '{_userManager.GetUserId(User)}'.");
             }
 
             var hasPassword = await _userManager.HasPasswordAsync(user);
@@ -158,7 +158,7 @@ namespace CarRent.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"Unable to load user with CarID '{_userManager.GetUserId(User)}'.");
             }
 
             var changePasswordResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
@@ -181,7 +181,7 @@ namespace CarRent.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"Unable to load user with CarID '{_userManager.GetUserId(User)}'.");
             }
 
             var hasPassword = await _userManager.HasPasswordAsync(user);
@@ -207,7 +207,7 @@ namespace CarRent.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"Unable to load user with CarID '{_userManager.GetUserId(User)}'.");
             }
 
             var addPasswordResult = await _userManager.AddPasswordAsync(user, model.NewPassword);
@@ -229,7 +229,7 @@ namespace CarRent.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"Unable to load user with CarID '{_userManager.GetUserId(User)}'.");
             }
 
             var model = new ExternalLoginsViewModel { CurrentLogins = await _userManager.GetLoginsAsync(user) };
@@ -261,19 +261,19 @@ namespace CarRent.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"Unable to load user with CarID '{_userManager.GetUserId(User)}'.");
             }
 
             var info = await _signInManager.GetExternalLoginInfoAsync(user.Id);
             if (info == null)
             {
-                throw new ApplicationException($"Unexpected error occurred loading external login info for user with ID '{user.Id}'.");
+                throw new ApplicationException($"Unexpected error occurred loading external login info for user with CarID '{user.Id}'.");
             }
 
             var result = await _userManager.AddLoginAsync(user, info);
             if (!result.Succeeded)
             {
-                throw new ApplicationException($"Unexpected error occurred adding external login for user with ID '{user.Id}'.");
+                throw new ApplicationException($"Unexpected error occurred adding external login for user with CarID '{user.Id}'.");
             }
 
             // Clear the existing external cookie to ensure a clean login process
@@ -290,13 +290,13 @@ namespace CarRent.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"Unable to load user with CarID '{_userManager.GetUserId(User)}'.");
             }
 
             var result = await _userManager.RemoveLoginAsync(user, model.LoginProvider, model.ProviderKey);
             if (!result.Succeeded)
             {
-                throw new ApplicationException($"Unexpected error occurred removing external login for user with ID '{user.Id}'.");
+                throw new ApplicationException($"Unexpected error occurred removing external login for user with CarID '{user.Id}'.");
             }
 
             await _signInManager.SignInAsync(user, isPersistent: false);
@@ -310,7 +310,7 @@ namespace CarRent.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"Unable to load user with CarID '{_userManager.GetUserId(User)}'.");
             }
 
             var model = new TwoFactorAuthenticationViewModel
@@ -329,12 +329,12 @@ namespace CarRent.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"Unable to load user with CarID '{_userManager.GetUserId(User)}'.");
             }
 
             if (!user.TwoFactorEnabled)
             {
-                throw new ApplicationException($"Unexpected error occured disabling 2FA for user with ID '{user.Id}'.");
+                throw new ApplicationException($"Unexpected error occured disabling 2FA for user with CarID '{user.Id}'.");
             }
 
             return View(nameof(Disable2fa));
@@ -347,16 +347,16 @@ namespace CarRent.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"Unable to load user with CarID '{_userManager.GetUserId(User)}'.");
             }
 
             var disable2faResult = await _userManager.SetTwoFactorEnabledAsync(user, false);
             if (!disable2faResult.Succeeded)
             {
-                throw new ApplicationException($"Unexpected error occured disabling 2FA for user with ID '{user.Id}'.");
+                throw new ApplicationException($"Unexpected error occured disabling 2FA for user with CarID '{user.Id}'.");
             }
 
-            _logger.LogInformation("User with ID {UserId} has disabled 2fa.", user.Id);
+            _logger.LogInformation("User with CarID {UserId} has disabled 2fa.", user.Id);
             return RedirectToAction(nameof(TwoFactorAuthentication));
         }
 
@@ -366,7 +366,7 @@ namespace CarRent.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"Unable to load user with CarID '{_userManager.GetUserId(User)}'.");
             }
 
             var unformattedKey = await _userManager.GetAuthenticatorKeyAsync(user);
@@ -397,7 +397,7 @@ namespace CarRent.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"Unable to load user with CarID '{_userManager.GetUserId(User)}'.");
             }
 
             // Strip spaces and hypens
@@ -413,7 +413,7 @@ namespace CarRent.Controllers
             }
 
             await _userManager.SetTwoFactorEnabledAsync(user, true);
-            _logger.LogInformation("User with ID {UserId} has enabled 2FA with an authenticator app.", user.Id);
+            _logger.LogInformation("User with CarID {UserId} has enabled 2FA with an authenticator app.", user.Id);
             return RedirectToAction(nameof(GenerateRecoveryCodes));
         }
 
@@ -430,7 +430,7 @@ namespace CarRent.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"Unable to load user with CarID '{_userManager.GetUserId(User)}'.");
             }
 
             await _userManager.SetTwoFactorEnabledAsync(user, false);
@@ -446,18 +446,18 @@ namespace CarRent.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                throw new ApplicationException($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+                throw new ApplicationException($"Unable to load user with CarID '{_userManager.GetUserId(User)}'.");
             }
 
             if (!user.TwoFactorEnabled)
             {
-                throw new ApplicationException($"Cannot generate recovery codes for user with ID '{user.Id}' as they do not have 2FA enabled.");
+                throw new ApplicationException($"Cannot generate recovery codes for user with CarID '{user.Id}' as they do not have 2FA enabled.");
             }
 
             var recoveryCodes = await _userManager.GenerateNewTwoFactorRecoveryCodesAsync(user, 10);
             var model = new GenerateRecoveryCodesViewModel { RecoveryCodes = recoveryCodes.ToArray() };
 
-            _logger.LogInformation("User with ID {UserId} has generated new 2FA recovery codes.", user.Id);
+            _logger.LogInformation("User with CarID {UserId} has generated new 2FA recovery codes.", user.Id);
 
             return View(model);
         }

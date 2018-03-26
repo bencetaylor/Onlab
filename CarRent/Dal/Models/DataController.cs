@@ -26,16 +26,16 @@ namespace CarRent.DAL.Models
         {
             var cars = context.Cars
                 .Include( c => c.Site)
+                .Include( c => c.Images)
                 .Select(c => new CarDTO
                 {
-                    ID = c.CarID,
+                    CarID = c.CarID,
                     Price = c.Price,
                     Type = c.Type ?? "none",
                     Brand = c.Brand ?? "none",
-                    // TODO - site shows as null???
                     Location = c.Site.Address,
-                    Plate = c.NumberPlate,
-                    //car.Image = c.Images.First() ?? null;
+                    NumberPlate = c.NumberPlate,
+                    //Image = c.Images.First()
                 }).ToList();
             
             return cars;
@@ -43,80 +43,103 @@ namespace CarRent.DAL.Models
 
         public IList<CarDetailsDTO> GetCarsDetailed()
         {
-            var cars = (from c in context.Cars
-                       select new CarDetailsDTO
-                       {
-                           Brand = c.Brand,
-                           CarID = c.CarID,
-                           Consuption = c.Consuption,
-                           Description = c.Description,
-                           Doors = c.Doors,
-                           Location = c.Site,
-                           NumberPlate = c.NumberPlate,
-                           Passangers = c.Passangers,
-                           Power = c.Power,
-                           Price = c.Price,
-                           State = c.State,
-                           Trunk = c.Trunk,
-                           Type = c.Type
-                       }).ToList();
+            var cars = context.Cars
+                .Include(c => c.Site)
+                //.Include(c => c.Images)
+                //.Include( c => c.Comments)
+                .Select(c => new CarDetailsDTO
+                {
+                    CarID = c.CarID,
+                    Brand = c.Brand,
+                    Location = c.Site,
+                    NumberPlate = c.NumberPlate,
+                    Passangers = c.Passangers,
+                    Power = c.Power,
+                    Price = c.Price,
+                    Consuption = c.Consuption,
+                    Doors = c.Doors,
+                    State = c.State,
+                    Trunk = c.Trunk,
+                    Type = c.Type,
+                    Description = c.Description,
+                    //Images = c.Images,
+                    //Comments = c.Comments
+                }).ToList();
+
             return cars;
         }
 
-        public IQueryable<CarDetailsDTO> GetCarsWithFullDetail()
+        public IList<CarDetailsDTO> GetCarsWithFullDetail()
         {
-            var cars = from c in context.Cars
-                       select new CarDetailsDTO()
-                       {
-                           Brand = c.Brand,
-                           CarID = c.CarID,
-                           Comments = c.Comments,
-                           Consuption = c.Consuption,
-                           Description = c.Description,
-                           Doors = c.Doors,
-                           Images = c.Images,
-                           Location = c.Site,
-                           NumberPlate = c.NumberPlate,
-                           Passangers = c.Passangers,
-                           Power = c.Power,
-                           Price = c.Price,
-                           State = c.State,
-                           Trunk = c.Trunk,
-                           Type = c.Type
-                       };
+            var cars = context.Cars
+                .Include(c => c.Site)
+                .Include(c => c.Images)
+                .Include(c => c.Comments)
+                .Select(c => new CarDetailsDTO
+                {
+                    CarID = c.CarID,
+                    Brand = c.Brand,
+                    Location = c.Site,
+                    NumberPlate = c.NumberPlate,
+                    Passangers = c.Passangers,
+                    Power = c.Power,
+                    Price = c.Price,
+                    Consuption = c.Consuption,
+                    Doors = c.Doors,
+                    State = c.State,
+                    Trunk = c.Trunk,
+                    Type = c.Type,
+                    Description = c.Description,
+                    //Images = c.Images,
+                    //Comments = c.Comments
+                }).ToList();
+
             return cars;
         }
 
         public CarDetailsDTO GetCar(int id)
         {
-            var car = from c in context.Cars
-                      where c.CarID == id
-                      select new CarDetailsDTO()
-                      {
-                          Brand = c.Brand,
-                          CarID = c.CarID,
-                          Comments = c.Comments,
-                          Consuption = c.Consuption,
-                          Description = c.Description,
-                          Doors = c.Doors,
-                          //Images = c.Images,
-                          // TODO Location not working 
-                          //Location = c.Site,
-                          NumberPlate = c.NumberPlate,
-                          Passangers = c.Passangers,
-                          Power = c.Power,
-                          Price = c.Price,
-                          State = c.State,
-                          Trunk = c.Trunk,
-                          Type = c.Type
-                      };
-            return car.First();
+            var car = context.Cars
+                .Include(c => c.Site)
+                .Include(c => c.Images)
+                .Include(c => c.Comments)
+                .Where(c => c.CarID == id)
+                .Select(c => new CarDetailsDTO
+                {
+                    CarID = c.CarID,
+                    Brand = c.Brand,
+                    Location = c.Site,
+                    NumberPlate = c.NumberPlate,
+                    Passangers = c.Passangers,
+                    Power = c.Power,
+                    Price = c.Price,
+                    Consuption = c.Consuption,
+                    Doors = c.Doors,
+                    State = c.State,
+                    Trunk = c.Trunk,
+                    Type = c.Type,
+                    Description = c.Description,
+                    //Images = c.Images,
+                    //Comments = c.Comments
+                }).First();
+            return car;
         }
 
         public void DeleteCar(int id)
         {
+            // Itt törölni kell a képeket és kommenteket is amik az autóhoz tartoznak
             var car = context.Cars.Find(id);
+            foreach(var img in car.Images)
+            {
+                context.Images.Remove(img);
+            }
+            foreach(var comment in car.Comments)
+            {
+                context.Comments.Remove(comment);
+            }
+
             context.Cars.Remove(car);
+
             context.SaveChanges();
         }
 
@@ -146,93 +169,139 @@ namespace CarRent.DAL.Models
         }
 
         // Manage Rents
-        public IQueryable<RentDTO> GetRents()
+        public IList<RentDTO> GetRents()
         {
-            var rents = from r in context.Rents
-                        select new RentDTO()
-                        {
-                            ID = r.RentID,
-                            Car = r.Car,
-                            RentEnds = r.RentEnds,
-                            RentsStart = r.RentStart
-                        };
+            var rents = context.Rents
+                .Include(r => r.Car)
+                .Select(r => new RentDTO()
+                {
+                    RentID = r.RentID,
+                    Car = r.Car,
+                    RentStarts = r.RentStarts,
+                    RentEnds = r.RentEnds
+                }).ToList();
             return rents;
         }
 
-        public IQueryable<RentDetailsDTO> GetRentsDetailed()
+        public IList<RentDetailsDTO> GetRentsDetailed()
         {
-            var rent = from r in context.Rents
-                       select new RentDetailsDTO()
-                       {
-                           RentID = r.RentID,
-                           //CarID = r.CarID,
-                           Car = r.Car,
-                           Insurance = r.Insurance,
-                           User = r.User,
-                           Price = r.Price,
-                           RentEnds = r.RentEnds,
-                           RentStart = r.RentStart,
-                           Site = r.Site,
-                           //SiteID = r.SiteID,
-                           State = r.State
-                       };
+            var rents = context.Rents
+                .Include( r => r.Car )
+                .Include( r => r.Site )
+                .Include( r => r.User )
+                .Select( r => new RentDetailsDTO()
+                {
+                    RentID = r.RentID,
+                    Car = r.Car,
+                    Site = r.Site,
+                    User = r.User,
+                    RentStarts = r.RentStarts,
+                    RentEnds = r.RentEnds,
+                    Price = r.Price,
+                    Insurance = r.Insurance,
+                    State = r.State
+                    
+                }).ToList();
+            return rents;
+        }
+
+        public RentDetailsDTO GetRent(int id)
+        {
+            var rent = context.Rents
+                .Where( r => r.RentID == id )
+                .Include( r => r.Car )
+                .Include( r => r.Site )
+                .Include( r => r.User )
+                .Select( r => new RentDetailsDTO()
+                {
+                    RentID = r.RentID,
+                    Car = r.Car,
+                    Site = r.Site,
+                    User = r.User,
+                    RentStarts = r.RentStarts,
+                    RentEnds = r.RentEnds,
+                    Price = r.Price,
+                    Insurance = r.Insurance,
+                    State = r.State
+
+                }).First();
+
             return rent;
         }
 
-        public IQueryable<RentDetailsDTO> GetRent(int id)
+        public Boolean CreateRent(RentDetailsDTO _rent)
         {
-            var rent = from r in context.Rents
-                       where r.RentID == id
-                       select new RentDetailsDTO()
-                       {
-                           RentID = r.RentID,
-                           //CarID = r.CarID,
-                           Car = r.Car,
-                           Insurance = r.Insurance,
-                           User = r.User,
-                           Price = r.Price,
-                           RentEnds = r.RentEnds,
-                           RentStart = r.RentStart,
-                           Site = r.Site,
-                          // SiteID = r.SiteID,
-                           State = r.State
-                       };
-            return rent;
+            var rent = new CarRentModels.RentModel()
+            {
+                RentID = _rent.RentID,
+                Car = _rent.Car,
+                Site = _rent.Site,
+                User = _rent.User,
+                RentStarts = _rent.RentStarts,
+                RentEnds = _rent.RentEnds,
+                Price = _rent.Price,
+                Insurance = _rent.Insurance,
+                State = _rent.State
+            };
+            context.Rents.Add(rent);
+            context.SaveChanges();
+            // TODO check that the save was successful
+            return true;
+        }
+
+        public void DeleteRent(int id)
+        {
+            // Csak a kölcsönzést töröljük, a user, autó, telephely sértetlen kell hogy maradjon
+            var rent = context.Rents.Find(id);
+
+            context.Rents.Remove(rent);
+            context.SaveChanges();
         }
 
         // Manage Sites
         public IList<SiteDTO> GetSites()
         {
-            var list = context.Sites.ToList();
-            var sitelist = new List<SiteDTO>();
-
-            var sites = from s in context.Sites
-                        select new SiteDTO()
-                        {
-                            SiteID = s.SiteID,
-                            Address = s.Address,
-                            Name = s.Name
-                        };
-            return sites.ToList();
+            var sites = context.Sites
+                .Include( s => s.Cars)
+                .Select(s => new SiteDTO()
+                {
+                    SiteID = s.SiteID,
+                    Name = s.Name,
+                    Address = s.Address,
+                    Cars = s.Cars
+                }).ToList();
+            return sites;
         }
 
-        public IQueryable<SiteDTO> GetSite(int id)
+        public SiteDTO GetSite(int id)
         {
-            var site = from s in context.Sites
-                       where s.SiteID == id
-                       select new SiteDTO()
-                       {
-                           SiteID = s.SiteID,
-                           Address = s.Address,
-                           Name = s.Name,
-                           Cars = s.Cars
-                       };
-            return site;
+            var sites = context.Sites
+                .Where( s => s.SiteID == id )
+                .Include( s => s.Cars )
+                .Select( s => new SiteDTO()
+                {
+                    SiteID = s.SiteID,
+                    Name = s.Name,
+                    Address = s.Address,
+                    Cars = s.Cars
+                }).First();
+            return sites;
         }
 
         public void DeleteSite(int id)
         {
+            // Ilyenkor az oda tartozó autókat ne törölje, csak állítsa null-ra a Site-ját
+
             var site = context.Sites.Find(id);
+
+            foreach(var car in site.Cars)
+            {
+                // Lehet elég lenne ez is:
+                // car.Site = null;
+                var c = context.Cars.Find(car);
+                c.Site = null;
+            }
+
             context.Sites.Remove(site);
             context.SaveChanges();
         }

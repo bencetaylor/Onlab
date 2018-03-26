@@ -1,0 +1,51 @@
+﻿@model CarRent.Models.DataViewModels.RentViewModel
+
+@{
+    ViewData["Title"] = "Rents";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Rents</h2>
+
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Car
+                </th>
+                <th>
+                    Starts
+                </th>
+                <th>
+                    Ends
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Rents)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Car.NumberPlate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RentStarts)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RentEnds)
+                    </td>
+                    <td>
+                        <a asp-area="" asp-controller="Rent" asp-action="Edit" asp-route-id="@item.RentID">Edit</a> |
+                        <a asp-area="" asp-controller="Rent" asp-action="Details" asp-route-id="@item.RentID">Details</a> |
+                        <a asp-area="" asp-controller="Rent" asp-action="Delete" asp-route-id="@item.RentID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div>
+        <a asp-area="" asp-controller="Rent" asp-action="Create" class="btn btn-light">Create</a>
+    </div>
+</div>

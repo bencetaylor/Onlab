@@ -155,7 +155,7 @@ namespace CarRent.DAL.Migrations
 
                     b.Property<DateTime>("RentEnds");
 
-                    b.Property<DateTime>("RentStart");
+                    b.Property<DateTime>("RentStarts");
 
                     b.Property<int>("SiteID");
 
