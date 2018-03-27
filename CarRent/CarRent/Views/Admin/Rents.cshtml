@@ -31,10 +31,10 @@
                         @Html.DisplayFor(modelItem => item.Car.NumberPlate)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.RentStarts)
+                        @Html.DisplayFor(modelItem => item.RentStarts.Date)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.RentEnds)
+                        @Html.DisplayFor(modelItem => item.RentEnds.Date)
                     </td>
                     <td>
                         <a asp-area="" asp-controller="Rent" asp-action="Edit" asp-route-id="@item.RentID">Edit</a> |

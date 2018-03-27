@@ -1,0 +1,71 @@
+﻿@model CarRent.Models.DataViewModels.RentViewModel
+
+@{
+    ViewData["Title"] = "RentCreate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>RentCreate</h2>
+
+<h4>RentViewModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="RentDetails.RentID" />
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label asp-for="RentDetails.Car" class="control-label"></label>
+                        <input asp-for="RentDetails.Car.NumberPlate" class="form-control" />
+                        <span asp-validation-for="RentDetails.Car.NumberPlate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="RentDetails.Site" class="control-label"></label>
+                        <input asp-for="RentDetails.Site.Name" class="form-control" />
+                        <span asp-validation-for="RentDetails.Site.Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="RentDetails.State" class="control-label"></label>
+                        <input asp-for="RentDetails.State" class="form-control" />
+                        <span asp-validation-for="RentDetails.State" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="RentDetails.User" class="control-label"></label>
+                        <input asp-for="RentDetails.User.UserName" class="form-control" />
+                        <span asp-validation-for="RentDetails.User.UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="RentDetails.RentStarts" class="control-label"></label>
+                        <input asp-for="RentDetails.RentStarts" type="date" class="form-control" />
+                        <span asp-validation-for="RentDetails.RentStarts" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="RentDetails.RentEnds" class="control-label"></label>
+                        <input asp-for="RentDetails.RentEnds" type="date" class="form-control" />
+                        <span asp-validation-for="RentDetails.RentEnds" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="RentDetails.Price" class="control-label"></label>
+                        <input asp-for="RentDetails.Price" type="number" class="form-control" />
+                        <span asp-validation-for="RentDetails.Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="RentDetails.Insurance" class="control-label"></label>
+                        <input asp-for="RentDetails.Insurance" class="form-control" />
+                        <span asp-validation-for="RentDetails.Insurance" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

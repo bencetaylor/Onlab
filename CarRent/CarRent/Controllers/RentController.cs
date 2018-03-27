@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using CarRent.Models.DataViewModels;
 using CarRent.Models;
 using CarRent.DAL.Models;
+using CarRent.DAL.Models.DTOs;
 
 namespace CarRent.Controllers
 {
@@ -24,6 +25,7 @@ namespace CarRent.Controllers
         public ActionResult Index()
         {
             model = new RentViewModel();
+            model.Rents = data.GetRents();
             return View("../Admin/Rents", model);
         }
 
@@ -51,19 +53,36 @@ namespace CarRent.Controllers
         // GET: Rent/Create
         public ActionResult Create()
         {
+            if (!User.IsInRole("ADMIN"))
+            {
+                var errorModel = new ErrorViewModel();
+                return View("../Shared/Error", errorModel);
+            }
 
-            return View();
+            model = new RentViewModel();
+
+            return View("../Admin/RentCreate", model);
         }
 
         // POST: Rent/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(RentViewModel model)
         {
+            if (!User.IsInRole("ADMIN"))
+            {
+                var errorModel = new ErrorViewModel();
+                return View("../Shared/Error", errorModel);
+            }
+
             try
             {
-                // TODO: Add insert logic here
-
+                if (ModelState.IsValid)
+                {
+                                        
+                    data.CreateRent(model.RentDetails);
+                    return RedirectToAction("Index");
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -125,7 +144,13 @@ namespace CarRent.Controllers
                 return View("../Shared/Error", errorModel);
             }
 
-            return View();
+            model = new RentViewModel();
+            var rent = data.GetRent(id);
+
+            if (rent == null)
+                return NotFound();
+            model.RentDetails = rent;
+            return View("../Admin/RentDelete", model);
         }
 
         // POST: Rent/Delete/5
@@ -135,7 +160,12 @@ namespace CarRent.Controllers
         {
             try
             {
-                // TODO: Add delete logic here
+                if (!User.IsInRole("ADMIN"))
+                {
+                    var errorModel = new ErrorViewModel();
+                    return View("../Shared/Error", errorModel);
+                }
+                data.DeleteRent(id);
 
                 return RedirectToAction(nameof(Index));
             }

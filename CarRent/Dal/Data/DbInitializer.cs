@@ -9,8 +9,7 @@ namespace CarRent.DAL.Data
 {
     public class DbInitializer
     {
-
-        public static async System.Threading.Tasks.Task InitializeAsync(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static void Initialize(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             context.Database.EnsureCreated();
             
@@ -30,7 +29,7 @@ namespace CarRent.DAL.Data
             }
             context.SaveChanges();
 
-           
+
             var admin = new ApplicationUser
             {
                 UserName = "bencetaylor@gmail.com",
@@ -51,26 +50,28 @@ namespace CarRent.DAL.Data
             userPWD = "User1234";
 
             userManager.CreateAsync(user, userPWD);
-            //userManager.AddToRoleAsync(user, roles[1].Id);
+            userManager.AddToRoleAsync(user, roles[1].Id);
+            
 
-            var userRole = new IdentityUserRole<string>()
+            var adminRole = new IdentityUserRole<string>()
             {
                 RoleId = roles[0].Id,
                 UserId = admin.Id
             };
-            // valami megint nem jó
-            await context.UserRoles.AddAsync(userRole);
 
-            //userRole = new IdentityUserRole<string>()
-            //{
-            //    RoleId = roles[1].Id,
-            //    UserId = user.Id
-            //};
+            context.UserRoles.Add(adminRole);
 
-            //context.UserRoles.Add(userRole);
+            var userRole = new IdentityUserRole<string>()
+            {
+                RoleId = roles[1].Id,
+                UserId = user.Id
+            };
 
-            context.SaveChanges();
+            context.UserRoles.Add(userRole);
+            
 
+            //// Csak egy mentés a végén, nehogy összeakadjon
+            //context.SaveChanges();
             
             var site1 = new SiteModel { Name = "Site1", Address = "Address1" };
             var site2 = new SiteModel { Name = "Site2", Address = "Address2" };
@@ -97,13 +98,13 @@ namespace CarRent.DAL.Data
             {
                 context.Cars.Add(c);
             }
-            context.SaveChanges();
+            //context.SaveChanges();
 
-            //// Add cars to site1
-            //foreach (var c in context.Cars)
-            //{
-            //    context.Sites.First().Cars.Add(c);
-            //}
+            // Add cars to site1
+            foreach (var c in context.Cars)
+            {
+                context.Sites.First().Cars.Add(c);
+            }
             //context.SaveChanges();
 
             // Creating rents

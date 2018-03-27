@@ -193,7 +193,7 @@ namespace CarRent.DAL.Models
         }
 
         // Manage Rents
-        public IList<RentDTO> GetRents()
+        public List<RentDTO> GetRents()
         {
             var rents = context.Rents
                 .Include(r => r.Car)
@@ -207,7 +207,7 @@ namespace CarRent.DAL.Models
             return rents;
         }
 
-        public IList<RentDetailsDTO> GetRentsDetailed()
+        public List<RentDetailsDTO> GetRentsDetailed()
         {
             var rents = context.Rents
                 .Include( r => r.Car )
