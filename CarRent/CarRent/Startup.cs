@@ -93,6 +93,12 @@ namespace CarRent
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+                routes.MapRoute(
+                    name: "admin",
+                    template: "Admin/{controller=Car}/{action=Index}/{id?}");
+                routes.MapRoute(
+                    name: "user",
+                    template: "User/{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

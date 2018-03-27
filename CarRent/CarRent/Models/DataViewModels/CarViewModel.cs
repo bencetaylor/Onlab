@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using CarRent.DAL.Models.DTOs;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CarRent.Models.DataViewModels
 {
@@ -8,7 +9,8 @@ namespace CarRent.Models.DataViewModels
     {
         public List<CarDTO> Cars;
         public List<CarDetailsDTO> CarsDetail;
-        public CarDetailsDTO CarFullDetail;
+        [BindProperty]
+        public CarDetailsDTO CarFullDetail { get; set; }
 
         public CarViewModel()
         {

@@ -23,7 +23,7 @@ namespace CarRent
                     var context = services.GetRequiredService<ApplicationDbContext>();
                     var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
                     var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                    DbInitializer.Initialize(context, userManager, roleManager);
+                    DbInitializer.InitializeAsync(context, userManager, roleManager);
                 }
                 catch (Exception ex)
                 {

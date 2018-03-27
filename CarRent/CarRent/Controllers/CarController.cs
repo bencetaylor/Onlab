@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using CarRent.DAL.Data;
 using CarRent.DAL.Models;
 using CarRent.Models.DataViewModels;
 using CarRent.DAL.Models.DTOs;
+using Microsoft.AspNetCore.Identity;
+using CarRent.Models;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+using System.IO;
 
 namespace CarRent.Controllers
 {
@@ -17,7 +18,7 @@ namespace CarRent.Controllers
         private CarViewModel model;
 
         // TODO context only in DAL project
-        public CarController()
+        public CarController(UserManager<ApplicationUser> _userManager)
         {
             data = new DataController();
         }
@@ -25,52 +26,94 @@ namespace CarRent.Controllers
         // GET: Car
         public ActionResult Index()
         {
-            var user = 
-            model = new CarViewModel();
-            var cars = data.GetCars();
-            foreach(var c in  cars)
-            {
-                model.Cars.Add(c);
+            // Admin views
+            if(User.IsInRole("ADMIN")){
+                model = new CarViewModel();
+                var cars = data.GetCars();
+                foreach (var c in cars)
+                {
+                    model.Cars.Add(c);
+                }
+
+                return View("../Admin/Cars", model);
             }
-            
-            return View("../Admin/Cars",model);
+            else
+            {
+                // TODO - user cars view
+                return View("../Home/Index");
+            }
         }
 
         // GET: Car/Details/5
         public ActionResult Details(int id)
         {
-            model = new CarViewModel();
-            var car = data.GetCar(id);
+            if (User.IsInRole("ADMIN"))
+            {
+                model = new CarViewModel();
+                var car = data.GetCar(id);
 
-            if (car == null)
-                return NotFound();
-            model.CarFullDetail = car;
-            return View("../Admin/CarDetail", model);
+                if (car == null)
+                    return NotFound();
+                model.CarFullDetail = car;
+                return View("../Admin/CarDetail", model);
+            }
+            else
+            {
+                // TODO - user car detail view
+                return View("Home/Index");
+            }
         }
 
         // GET: Car/Create
-        public ActionResult Create([Bind("Brand,Type,Location,NumberPlate,Power,Doors,Price,Consuption,Description,Images")] CarDetailsDTO car)
+        public ActionResult Create()
         {
-            var model = new CarViewModel();
-            if (ModelState.IsValid)
+            if (!User.IsInRole("ADMIN"))
             {
-                data.CreateCar(car);
-                return RedirectToAction("Index");
+                var errorModel = new ErrorViewModel();
+                return View("../Shared/Error", errorModel);
             }
-            model.CarFullDetail = car;
-            return View("../Admin/CarDetail", model);
+            
+            model = new CarViewModel();
+            
+            return View("../Admin/CarCreate", model);
         }
 
         // POST: Car/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public ActionResult Create(CarViewModel model)
         {
-            // TODO - check users permission to create (only admin can create)
+            if (!User.IsInRole("ADMIN"))
+            {
+                var errorModel = new ErrorViewModel();
+                return View("../Shared/Error", errorModel);
+            }
+            
             try
             {
-                // TODO: Add insert logic here
+                if (ModelState.IsValid)
+                {
+                    //if (Request.Form.Files.Count > 0)
+                    //{
+                    //    var file = Request.Form.Files[0];
 
+                    //    if (file != null && file.Length > 0)
+                    //    {
+                    //        // TODO resize and save to database
+                    //        var fileName = Path.GetFileName(file.FileName);
+                    //        var path = Path.Combine("", fileName);
+                           
+                    //        using (var stream = new FileStream(filePath, FileMode.Create))
+                    //        {
+                    //            file.CopyTo(stream);
+                    //            //await formFile.CopyToAsync(stream);
+                    //        }
+                    //    }
+                    //}
+                    
+                    data.CreateOrUpdateCar(model.CarFullDetail);
+                    return RedirectToAction("Index");
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -79,9 +122,78 @@ namespace CarRent.Controllers
             }
         }
 
+        //[HttpPost]
+        //public ActionResult UploadImageMethod()
+        //{
+        //    if (Request.Form.Files.Count != 0)
+        //    {
+        //        for (int i = 0; i < Request.Form.Files.Count; i++)
+        //        {
+        //            System.Web.
+
+        //            HttpUtility file = Request.Form.Files[i];
+        //            int fileSize = file.ContentLength;
+        //            string fileName = file.FileName;
+        //            file.SaveAs(Server.MapPath("~/Upload_Files/" + fileName));
+        //            ImageGallery imageGallery = new ImageGallery();
+        //            imageGallery.ID = Guid.NewGuid();
+        //            imageGallery.Name = fileName;
+        //            imageGallery.ImagePath = "~/Upload_Files/" + fileName;
+        //            db.ImageGallery.Add(imageGallery);
+        //            db.SaveChanges();
+        //        }
+        //        return Content("Success");
+        //    }
+        //    return Content("failed");
+        //}
+        
+
+        // TODO - file feltöltés és mentés adatbázisba??
+        [HttpPost("UploadFiles")]
+        public async Task<IActionResult> PostFiles(List<IFormFile> files)
+        {
+            long size = files.Sum(f => f.Length);
+
+            // full path to file in temp location
+            var filePath = Path.GetTempFileName();
+
+            foreach (var formFile in files)
+            {
+                if (formFile.Length > 0)
+                {
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await formFile.CopyToAsync(stream);
+                    }
+                }
+            }
+
+            // process uploaded files
+            // Don't rely on or trust the FileName property without validation.
+            using (var memoryStream = new MemoryStream())
+            {
+                //await model.AvatarImage.CopyToAsync(memoryStream);
+                //user.AvatarImage = memoryStream.ToArray();
+                ImageDTO image = new ImageDTO()
+                {
+                     Content = memoryStream.ToArray(),
+                     Name = files.First().Name,
+                    
+                };
+            }
+
+            return Ok(new { count = files.Count, size, filePath });
+        }
+
         // GET: Car/Edit/5
         public ActionResult Edit(int id)
         {
+            if (!User.IsInRole("ADMIN"))
+            {
+                var errorModel = new ErrorViewModel();
+                return View("../Shared/Error", errorModel);
+            }
+
             model = new CarViewModel();
             var car = data.GetCar(id);
 
@@ -94,12 +206,21 @@ namespace CarRent.Controllers
         // POST: Car/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public ActionResult Edit(int id, CarViewModel model)
         {
+            if (!User.IsInRole("ADMIN"))
+            {
+                var errorModel = new ErrorViewModel();
+                return View("../Shared/Error", errorModel);
+            }
+
             try
             {
-                // TODO: Add update logic here
-
+                if (ModelState.IsValid)
+                {
+                    data.CreateOrUpdateCar(model.CarFullDetail);
+                    return RedirectToAction("Index");
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -111,6 +232,11 @@ namespace CarRent.Controllers
         // GET: Car/Delete/5
         public ActionResult Delete(int id)
         {
+            if (!User.IsInRole("ADMIN"))
+            {
+                var errorModel = new ErrorViewModel();
+                return View("../Shared/Error", errorModel);
+            }
             model = new CarViewModel();
             var car = data.GetCar(id);
 
@@ -125,9 +251,16 @@ namespace CarRent.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            // TODO - check users permissions to delete anything (only admin can delete)
+            if (!User.IsInRole("ADMIN"))
+            {
+                var errorModel = new ErrorViewModel();
+                return View("../Shared/Error", errorModel);
+            }
+            
             data.DeleteCar(id);
             return RedirectToAction("Index");
         }
+
+        
     }
 }

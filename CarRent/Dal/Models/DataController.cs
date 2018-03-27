@@ -1,4 +1,5 @@
 ﻿using CarRent.DAL.Data;
+using CarRent.DAL.Models.CarRentModels;
 using CarRent.DAL.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -143,7 +144,7 @@ namespace CarRent.DAL.Models
             context.SaveChanges();
         }
 
-        public void CreateCar(CarDetailsDTO c)
+        public void CreateOrUpdateCar(CarDetailsDTO c)
         {
             var carmodel = new CarRentModels.CarModel()
             {
@@ -153,7 +154,7 @@ namespace CarRent.DAL.Models
                 Consuption = c.Consuption,
                 Description = c.Description,
                 Doors = c.Doors,
-                //Images = c.Images,
+                Images = c.Images,
                 // TODO Location not working 
                 //Location = c.Site,
                 NumberPlate = c.NumberPlate,
@@ -164,7 +165,30 @@ namespace CarRent.DAL.Models
                 Trunk = c.Trunk,
                 Type = c.Type
             };
-            context.Cars.Add(carmodel);
+
+            if (context.Cars.Any(car => car.CarID == carmodel.CarID))
+            {
+                context.Cars.Update(carmodel);
+            }
+            else
+            {
+                context.Cars.Add(carmodel);
+            }
+
+            context.SaveChanges();
+        }
+
+        public void UploadImage(ImageDTO dto)
+        {
+            var image = new ImageModel()
+            {
+                ImageID = dto.ImageID,
+                Name = dto.Name,
+                Content = dto.Content,
+                Car = dto.Car
+            };
+
+            context.Images.Add(image);
             context.SaveChanges();
         }
 

@@ -5,27 +5,53 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using CarRent.Models.DataViewModels;
+using CarRent.Models;
+using CarRent.DAL.Models;
 
 namespace CarRent.Controllers
 {
     public class RentController : Controller
     {
+        private readonly DataController data;
+        private RentViewModel model;
+
+        public RentController()
+        {
+            data = new DataController();
+        }
+
         // GET: Rent
         public ActionResult Index()
         {
-            var model = new RentViewModel();
+            model = new RentViewModel();
             return View("../Admin/Rents", model);
         }
 
         // GET: Rent/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            
+            if (User.IsInRole("ADMIN"))
+            {
+                model = new RentViewModel();
+                var rent = data.GetRent(id);
+
+                if (rent == null)
+                    return NotFound();
+                model.RentDetails = rent;
+                return View("../Admin/RentDetails", model);
+            }
+            else
+            {
+                // TODO - user rent detail view
+                return View("Home/Index");
+            }
         }
 
         // GET: Rent/Create
         public ActionResult Create()
         {
+
             return View();
         }
 
@@ -49,7 +75,19 @@ namespace CarRent.Controllers
         // GET: Rent/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            if (!User.IsInRole("ADMIN"))
+            {
+                var errorModel = new ErrorViewModel();
+                return View("../Shared/Error", errorModel);
+            }
+
+            model = new RentViewModel();
+            var rent = data.GetRent(id);
+
+            if (rent == null)
+                return NotFound();
+            model.RentDetails = rent;
+            return View("../Admin/RentEdit", model);
         }
 
         // POST: Rent/Edit/5
@@ -57,10 +95,19 @@ namespace CarRent.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
+            if (!User.IsInRole("ADMIN"))
+            {
+                var errorModel = new ErrorViewModel();
+                return View("../Shared/Error", errorModel);
+            }
+
             try
             {
-                // TODO: Add update logic here
-
+                if (ModelState.IsValid)
+                {
+                    data.CreateRent(model.RentDetails);
+                    return RedirectToAction("Index");
+                }
                 return RedirectToAction(nameof(Index));
             }
             catch
@@ -72,6 +119,12 @@ namespace CarRent.Controllers
         // GET: Rent/Delete/5
         public ActionResult Delete(int id)
         {
+            if (!User.IsInRole("ADMIN"))
+            {
+                var errorModel = new ErrorViewModel();
+                return View("../Shared/Error", errorModel);
+            }
+
             return View();
         }
 

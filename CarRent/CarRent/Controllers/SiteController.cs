@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using CarRent.Models.DataViewModels;
 using CarRent.DAL.Models;
+using CarRent.Models;
 
 namespace CarRent.Controllers
 {
@@ -22,6 +23,12 @@ namespace CarRent.Controllers
         // GET: Site
         public ActionResult Index()
         {
+            if (!User.IsInRole("ADMIN"))
+            {
+                var errorModel = new ErrorViewModel();
+                return View("../Shared/Error", errorModel);
+            }
+
             model = new SiteViewModel();
             var sites = data.GetSites();
             foreach (var c in sites)
@@ -35,12 +42,24 @@ namespace CarRent.Controllers
         // GET: Site/Details/5
         public ActionResult Details(int id)
         {
+            if (!User.IsInRole("ADMIN"))
+            {
+                var errorModel = new ErrorViewModel();
+                return View("../Shared/Error", errorModel);
+            }
+
             return View();
         }
 
         // GET: Site/Create
         public ActionResult Create()
         {
+            if (!User.IsInRole("ADMIN"))
+            {
+                var errorModel = new ErrorViewModel();
+                return View("../Shared/Error", errorModel);
+            }
+
             return View();
         }
 
@@ -64,6 +83,12 @@ namespace CarRent.Controllers
         // GET: Site/Edit/5
         public ActionResult Edit(int id)
         {
+            if (!User.IsInRole("ADMIN"))
+            {
+                var errorModel = new ErrorViewModel();
+                return View("../Shared/Error", errorModel);
+            }
+
             return View();
         }
 
@@ -87,6 +112,12 @@ namespace CarRent.Controllers
         // GET: Site/Delete/5
         public ActionResult Delete(int id)
         {
+            if (!User.IsInRole("ADMIN"))
+            {
+                var errorModel = new ErrorViewModel();
+                return View("../Shared/Error", errorModel);
+            }
+
             return View();
         }
 

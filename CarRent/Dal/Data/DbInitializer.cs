@@ -10,7 +10,7 @@ namespace CarRent.DAL.Data
     public class DbInitializer
     {
 
-        public static void Initialize(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async System.Threading.Tasks.Task InitializeAsync(ApplicationDbContext context, UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             context.Database.EnsureCreated();
             
@@ -18,29 +18,6 @@ namespace CarRent.DAL.Data
             {
                 return;
             }
-            //var roles = new IdentityRole[]
-            //{
-            //    new IdentityRole{Id="admin", Name="ADMIN"},
-            //    new IdentityRole{Id="user", Name="USER"}
-            //};
-            //foreach (IdentityRole r in roles)
-            //{
-            //    context.Roles.Add(r);
-            //}
-
-
-            //var user = new ApplicationUser
-            //{
-            //    UserName = "bencetaylor@gmail.com",
-            //    Email = "bencetaylor@gmail.com"
-            //};
-
-            //string userPWD = "Admin1234";
-
-            //userManager.CreateAsync(user, userPWD);
-
-            //userManager.AddToRoleAsync(user, context.Roles.ElementAt(0).Id);
-
 
             var roles = new IdentityRole[]
             {
@@ -74,18 +51,15 @@ namespace CarRent.DAL.Data
             userPWD = "User1234";
 
             userManager.CreateAsync(user, userPWD);
-            userManager.AddToRoleAsync(user, roles[1].Id);
-
-
-           // var rl = roleManager.Roles.Select(r => r.Name).ToList();
+            //userManager.AddToRoleAsync(user, roles[1].Id);
 
             var userRole = new IdentityUserRole<string>()
             {
                 RoleId = roles[0].Id,
                 UserId = admin.Id
             };
-
-            context.UserRoles.Add(userRole);
+            // valami megint nem jó
+            await context.UserRoles.AddAsync(userRole);
 
             //userRole = new IdentityUserRole<string>()
             //{
@@ -97,10 +71,7 @@ namespace CarRent.DAL.Data
 
             context.SaveChanges();
 
-
-
-
-
+            
             var site1 = new SiteModel { Name = "Site1", Address = "Address1" };
             var site2 = new SiteModel { Name = "Site2", Address = "Address2" };
             // Creating sites
@@ -135,17 +106,17 @@ namespace CarRent.DAL.Data
             //}
             //context.SaveChanges();
 
-            //// Creating rents
-            //var rents = new RentModel[]
-            //{
-            //    new RentModel{}
-            //};
+            // Creating rents
+            var rents = new RentModel[]
+            {
+                new RentModel{Car=cars[0],User=user,Site=site1,RentStarts=new System.DateTime(2018,3,15),RentEnds=new System.DateTime(2018,3,20),State=RentState.Pending}
+            };
 
-            //foreach (RentModel r in rents)
-            //{
-            //    context.Rents.Add(r);
-            //}
-            //context.SaveChanges();
+            foreach (RentModel r in rents)
+            {
+                context.Rents.Add(r);
+            }
+            context.SaveChanges();
         }
     }
 }

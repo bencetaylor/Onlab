@@ -1,4 +1,5 @@
 ﻿using CarRent.DAL.Models.DTOs;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,8 @@ namespace CarRent.Models.DataViewModels
     public class RentViewModel
     {
         public List<RentDTO> Rents;
-        public RentDetailsDTO RentDetails;
+        [BindProperty]
+        public RentDetailsDTO RentDetails { get; set; }
 
         public RentViewModel()
         {

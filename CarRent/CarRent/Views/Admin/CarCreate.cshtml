@@ -11,8 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="Create" enctype="multipart/form-data">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CarFullDetail.CarID" />
@@ -64,9 +63,10 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="CarFullDetail.Images" class="control-label"></label>
-                    <input asp-for="CarFullDetail.Images" class="form-control" />
+                    <input asp-for="CarFullDetail.Images" type="file" class="form-control-file" multiple/>
                     <span asp-validation-for="CarFullDetail.Images" class="text-danger"></span>
                 </div>
+                
             </div>
 
             <div class="form-group">
