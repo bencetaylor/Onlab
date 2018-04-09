@@ -83,7 +83,7 @@ namespace CarRent.Controllers
         // POST: Car/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CarViewModel model)
+        public ActionResult Create(CarViewModel model, List<IFormFile> images)
         {
             if (!User.IsInRole("ADMIN"))
             {
@@ -91,39 +91,50 @@ namespace CarRent.Controllers
                 return View("../Shared/Error", errorModel);
             }
             
+            
             try
             {
                 if (ModelState.IsValid)
                 {
-                    //if (Request.Form.Files.Count > 0)
-                    //{
-                    //    var file = Request.Form.Files[0];
-
-                    //    if (file != null && file.Length > 0)
-                    //    {
-                    //        // TODO resize and save to database
-                    //        var fileName = Path.GetFileName(file.FileName);
-                    //        var path = Path.Combine("", fileName);
-
-                    //        using (var stream = new FileStream(filePath, FileMode.Create))
-                    //        {
-                    //            file.CopyTo(stream);
-                    //            //await formFile.CopyToAsync(stream);
-                    //        }
-                    //    }
-                    //}
-
                     //var site = data.GetSite(model.CarFullDetail.Location.Name);
                     //model.CarFullDetail.Location = site;
 
+                    // Valamiért a site null marad és nem lehet hozzáadni az autóhoz...
+                    //var site = model.CarFullDetail.Location;
+
+
+                    // Addig minden autó a Site1-be kerül
+                    model.CarFullDetail.Location = data.GetSiteByID(1);
+
                     data.CreateOrUpdateCar(model.CarFullDetail);
+
+                    var imageList = new List<ImageDTO>();
+
+                    // Képek feltöltése
+                    foreach (var formFile in images)
+                    {
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", formFile.FileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            formFile.CopyToAsync(stream);
+                        }
+                        var image = new ImageDTO()
+                        {
+                            Car = data.FindCar(model.CarFullDetail.CarID),
+                            Path = filePath,
+                            Name = formFile.Name
+                        };
+                        data.SaveImage(image);
+                    }
+                    
                     return RedirectToAction("Index");
                 }
                 return RedirectToAction(nameof(Index));
             }
             catch
             {
-                return View();
+                return RedirectToAction("Index");
             }
         }
         
@@ -131,8 +142,6 @@ namespace CarRent.Controllers
         [HttpPost("UploadFiles")]
         public async Task<IActionResult> PostFiles(List<IFormFile> files)
         {
-            //long size = files.Sum(f => f.Length);
-
             // könyvtár ahova lementjük a file-t
             // csak a file név és egyéb adatok a db-be
             // wwwroot
@@ -146,23 +155,30 @@ namespace CarRent.Controllers
                 {
                     await formFile.CopyToAsync(stream);
                 }
+                var image = new ImageDTO()
+                {
+                    Path = filePath,
+                    Name = formFile.Name
+                };
+                data.SaveImage(image);
             }
+
 
             // process uploaded files
             // Don't rely on or trust the FileName property without validation.
-            using (var memoryStream = new MemoryStream())
-            {
-                foreach( var file in files)
-                {
-                    ImageDTO image = new ImageDTO()
-                    {
-                        Path = Path.Combine(Directory.GetCurrentDirectory(),
-                           "wwwroot", file.FileName),
-                        Name = file.Name,
-                    };
-                    data.SaveImage(image);
-                }
-            }
+            //using (var memoryStream = new MemoryStream())
+            //{
+            //    foreach( var file in files)
+            //    {
+            //        ImageDTO image = new ImageDTO()
+            //        {
+            //            Path = Path.Combine(Directory.GetCurrentDirectory(),
+            //               "wwwroot", file.FileName),
+            //            Name = file.Name,
+            //        };
+            //        data.SaveImage(image);
+            //    }
+            //}
 
             return View();
         }
@@ -212,6 +228,7 @@ namespace CarRent.Controllers
             }
         }
 
+        /*
         // GET: Car/Delete/5
         public ActionResult Delete(int id)
         {
@@ -228,6 +245,7 @@ namespace CarRent.Controllers
             model.CarFullDetail = car;
             return View("../Admin/CarDelete", model);
         }
+        
 
         // POST: Car/Delete/5
         [HttpPost, ActionName("Delete")]
@@ -243,7 +261,38 @@ namespace CarRent.Controllers
             data.DeleteCar(id);
             return RedirectToAction("Index");
         }
+        */
+        /*
+            // POST: Car/Delete/5
+            [HttpPost]
+            public ActionResult Delete(int id)
+            {
+                if (!User.IsInRole("ADMIN"))
+                {
+                    var errorModel = new ErrorViewModel();
+                    return View("../Shared/Error", errorModel);
+                }
 
-        
+                data.DeleteCar(id);
+                return RedirectToAction("Index");
+            }
+            */
+
+
+        // GET: Car/Delete/5
+        public ActionResult Delete(int id)
+        {
+            if (!User.IsInRole("ADMIN"))
+            {
+                var errorModel = new ErrorViewModel();
+                return View("../Shared/Error", errorModel);
+            }
+            var car = data.GetCar(id);
+            if (car == null)
+                return NotFound();
+
+            data.DeleteCar(id);
+            return RedirectToAction("Index");
+        }
     }
 }

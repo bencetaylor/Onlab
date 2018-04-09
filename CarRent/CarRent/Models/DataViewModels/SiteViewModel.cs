@@ -12,6 +12,7 @@ namespace CarRent.Models.DataViewModels
         public List<SiteDTO> Sites;
         [BindProperty]
         public SiteDTO SiteDetails { get; set; }
+        public int carCount;
 
         public SiteViewModel()
         {

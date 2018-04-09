@@ -1,0 +1,66 @@
+﻿@model CarRent.Models.DataViewModels.SiteViewModel
+
+@{
+    ViewData["Title"] = "SiteDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>SiteDetail</h2>
+<div class="container">
+    <div class="row">
+        <table class="w-100 table">
+            <tr>
+                <th>Name:</th>
+                <td>@Model.SiteDetails.Name</td>
+            </tr>
+            <tr>
+                <th>Address:</th>
+                <td>@Model.SiteDetails.Address</td>
+            </tr>
+            <tr>
+                <th>Cars available:</th>
+                <td>@Model.carCount</td>
+            </tr>
+        </table>
+    </div>
+    <h4>Cars</h4>
+    <div class="row">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Brand
+                    </th>
+                    <th>
+                        Nuberplate
+                    </th>
+                    <th>
+                        Car state
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var car in Model.SiteDetails.Cars)
+            {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => car.Brand)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => car.NumberPlate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => car.State)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div>
+    <a asp-area="" asp-controller="Site" asp-action="Edit" asp-route-id="@Model.SiteDetails.SiteID" class="btn btn-light">Edit</a> |
+    <a asp-area="" asp-controller="Site" asp-action="Delete" asp-route-id="@Model.SiteDetails.SiteID" class="btn btn-danger btn-sm">Delete</a> |
+    <a asp-action="Index" class="btn btn-light">Back to List</a>
+</div>

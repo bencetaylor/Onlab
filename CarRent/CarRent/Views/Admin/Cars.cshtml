@@ -50,7 +50,39 @@
                         @Html.DisplayFor(modelItem => item.Type)
                     </td>
                     <td> 
-                        <a asp-area="" asp-controller="Car" asp-action="Edit" asp-route-id="@item.CarID" class="btn btn-sm btn-light">Edit</a> 
+                        <a asp-area="" asp-controller="Car" asp-action="Edit" asp-route-id="@item.CarID" class="btn btn-sm btn-light">Edit</a>
+                        
+                        <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#myModal" disabled>
+                            Delete
+                        </button>
+                        <!-- The Modal -->
+                        <div class="modal fade" id="myModal">
+                            <div class="modal-dialog modal-sm modal-dialog-centered">
+                                <div class="modal-content">
+
+                                    <!-- Modal Header -->
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Delete Car</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+
+                                    <!-- Modal body -->
+                                    <div class="modal-body">
+                                        Do you really want to delete @item.Brand?
+                                    </div>
+
+                                    <!-- Modal footer 
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                        -->
+                                    <div class="modal-footer">
+                                        <!-- De itt bent SQL Exception keletkezik (FK_Constraint in dbo.Rents???) -->
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Ha itt van kint a conroller hívás, működik -->
                         <a asp-area="" asp-controller="Car" asp-action="Delete" asp-route-id="@item.CarID" class="btn btn-sm btn-danger">Delete</a>
                     </td>
                 </tr>

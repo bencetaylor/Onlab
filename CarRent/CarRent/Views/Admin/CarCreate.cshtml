@@ -37,7 +37,7 @@
                 <select asp-for="CarFullDetail.Location" class="form-control">
                     @foreach (var site in Model.Sites)
                     {
-                        <option>@Html.DisplayFor(modelItem => site.Name)</option>
+                        <option>@Html.DisplayFor(modelItem => site)</option>
                     }
                 </select>
                 <span asp-validation-for="CarFullDetail.Location" class="text-danger"></span>
@@ -78,8 +78,11 @@
             </div>
             <div class="form-group row">
                 <label asp-for="CarFullDetail.Images" class="control-label"></label>
-                <input asp-for="CarFullDetail.Images" type="file" class="form-control custom-file-input" />
+                <input type="file" name="images" class="form-control" multiple />
+                <!--
+                <input asp-for="CarFullDetail.Images" type="file" name="images" class="form-control" />
                 <span asp-validation-for="CarFullDetail.Images" class="text-danger"></span>
+                -->
             </div>
         </div>
     </div>

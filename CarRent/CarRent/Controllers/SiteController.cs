@@ -47,8 +47,11 @@ namespace CarRent.Controllers
                 var errorModel = new ErrorViewModel();
                 return View("../Shared/Error", errorModel);
             }
+            var model = new SiteViewModel();
+            model.SiteDetails = data.GetSite(id);
+            model.carCount = model.SiteDetails.Cars.Count();
 
-            return View();
+            return View("../Admin/SiteDetail", model);
         }
 
         // GET: Site/Create
@@ -88,8 +91,10 @@ namespace CarRent.Controllers
                 var errorModel = new ErrorViewModel();
                 return View("../Shared/Error", errorModel);
             }
+            var model = new SiteViewModel();
+            model.SiteDetails = data.GetSite(id);
 
-            return View();
+            return View("../Admin/SiteEdit", model);
         }
 
         // POST: Site/Edit/5

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -151,12 +152,21 @@ namespace CarRent.DAL.Models
             return context.Cars.Find(Numberplate);
         }
 
+        public CarModel FindCar(int id)
+        {
+            return context.Cars.Find(id);
+        }
+
         public void DeleteCar(int id)
         {
             // Itt törölni kell a képeket és kommenteket is amik az autóhoz tartoznak
             var car = context.Cars.Find(id);
             foreach(var img in car.Images)
             {
+                if (File.Exists(img.Path))
+                {
+                    File.Delete(img.Path);
+                }
                 context.Images.Remove(img);
             }
             foreach(var comment in car.Comments)
@@ -171,6 +181,8 @@ namespace CarRent.DAL.Models
 
         public void CreateOrUpdateCar(CarDetailsDTO c)
         {
+            var site = c.Location;
+
             var carmodel = new CarRentModels.CarModel()
             {
                 Brand = c.Brand,
@@ -181,7 +193,7 @@ namespace CarRent.DAL.Models
                 Doors = c.Doors,
                 Images = c.Images,
                 // TODO Location not working 
-                //Location = c.Site,
+                Site = c.Location,
                 NumberPlate = c.NumberPlate,
                 Passangers = c.Passangers,
                 Power = c.Power,
@@ -199,6 +211,9 @@ namespace CarRent.DAL.Models
             {
                 context.Cars.Add(carmodel);
             }
+
+            site.Cars.Add(carmodel);
+            context.Sites.Update(site);
 
             context.SaveChanges();
         }
@@ -337,9 +352,9 @@ namespace CarRent.DAL.Models
             return sites;
         }
 
-        public SiteModel GetSite(string name)
+        public SiteModel GetSiteByID(int id)
         {
-            return context.Sites.Find(name);
+            return context.Sites.Find(id);
         }
 
         public void DeleteSite(int id)
@@ -368,7 +383,13 @@ namespace CarRent.DAL.Models
                 Name = _image.Name,
                 Path = _image.Path
             };
+            var car = image.Car;
+            car.Images.Add(image);
+
+            context.Cars.Update(car);
+            
             context.Images.Add(image);
+            context.SaveChanges();
         }
 
         public List<String> GetCarTypes()
