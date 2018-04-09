@@ -22,4 +22,8 @@
     <ProjectReference Include="..\Dal\CarRent.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Uploads\" />
+  </ItemGroup>
+
 </Project>

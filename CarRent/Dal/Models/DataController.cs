@@ -32,13 +32,33 @@ namespace CarRent.DAL.Models
                 {
                     CarID = c.CarID,
                     Price = c.Price,
-                    Type = c.Type ?? "none",
+                    Type = c.Type,
                     Brand = c.Brand ?? "none",
                     Location = c.Site.Address,
                     NumberPlate = c.NumberPlate,
                     //Image = c.Images.First()
                 }).ToList();
             
+            return cars;
+        }
+
+        public IList<CarDTO> GetTopCars()
+        {
+            var cars = context.Cars
+                .Include(c => c.Site)
+                .Include(c => c.Images)
+                .Select(c => new CarDTO
+                {
+                    CarID = c.CarID,
+                    Price = c.Price,
+                    Type = c.Type,
+                    Brand = c.Brand ?? "none",
+                    Location = c.Site.Address,
+                    NumberPlate = c.NumberPlate,
+                    //Image = c.Images.First()
+                }).Take(5)
+                .ToList();
+
             return cars;
         }
 
@@ -126,6 +146,11 @@ namespace CarRent.DAL.Models
             return car;
         }
 
+        public CarModel GetCar(string Numberplate)
+        {
+            return context.Cars.Find(Numberplate);
+        }
+
         public void DeleteCar(int id)
         {
             // Itt törölni kell a képeket és kommenteket is amik az autóhoz tartoznak
@@ -184,7 +209,7 @@ namespace CarRent.DAL.Models
             {
                 ImageID = dto.ImageID,
                 Name = dto.Name,
-                Content = dto.Content,
+                Path = dto.Path,
                 Car = dto.Car
             };
 
@@ -283,7 +308,7 @@ namespace CarRent.DAL.Models
         }
 
         // Manage Sites
-        public IList<SiteDTO> GetSites()
+        public List<SiteDTO> GetSites()
         {
             var sites = context.Sites
                 .Include( s => s.Cars)
@@ -312,6 +337,11 @@ namespace CarRent.DAL.Models
             return sites;
         }
 
+        public SiteModel GetSite(string name)
+        {
+            return context.Sites.Find(name);
+        }
+
         public void DeleteSite(int id)
         {
             // Ilyenkor az oda tartozó autókat ne törölje, csak állítsa null-ra a Site-ját
@@ -328,6 +358,22 @@ namespace CarRent.DAL.Models
 
             context.Sites.Remove(site);
             context.SaveChanges();
+        }
+
+        public void SaveImage(ImageDTO _image)
+        {
+            var image = new ImageModel()
+            {
+                Car = _image.Car,
+                Name = _image.Name,
+                Path = _image.Path
+            };
+            context.Images.Add(image);
+        }
+
+        public List<String> GetCarTypes()
+        {
+            return Enum.GetNames(typeof(CarTypes.Types)).ToList();
         }
     }
 }

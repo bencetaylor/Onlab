@@ -18,7 +18,7 @@ namespace CarRent.DAL.Models.CarRentModels
         public ICollection<CommentModel> Comments { get; set; }
 
         public String NumberPlate { get; set; }
-        public String Type { get; set; }
+        public CarTypes.Types Type { get; set; }
         public String Brand { get; set; }
         public int Price { get; set; }
         public int Doors { get; set; }

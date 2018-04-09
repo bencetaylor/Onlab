@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using CarRent.Models.AccountViewModels;
 using CarRent.Services;
 using CarRent.DAL.Models;
+using CarRent.DAL.Data;
 
 namespace CarRent.Controllers
 {
@@ -20,17 +21,20 @@ namespace CarRent.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly ILogger _logger;
+        private readonly ApplicationDbContext _context;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
-            ILogger<AccountController> logger)
+            ILogger<AccountController> logger, ApplicationDbContext context
+            )
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _logger = logger;
+            _context = context;
         }
 
         [TempData]
@@ -217,8 +221,19 @@ namespace CarRent.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+
+                // Valamiért nem akarja hozzáadni a user-t a role-hoz
+
+                //var role = await _context.Roles.FindAsync("user");
+
                 var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+
+                // Nem létezik ilyen hogy USER role ?!?!?!
+                // var role = _context.Roles.Find("user");
+                // var result2 = await _userManager.AddToRoleAsync(user, "admin");
+
+
+                if (result.Succeeded /*&& result2.Succeeded*/)
                 {
                     _logger.LogInformation("User created a new account with password.");
 
@@ -231,6 +246,7 @@ namespace CarRent.Controllers
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);
+                //AddErrors(result2);
             }
 
             // If we got this far, something failed, redisplay form

@@ -74,7 +74,9 @@ namespace CarRent.Controllers
             }
             
             model = new CarViewModel();
-            
+            model.Types = data.GetCarTypes();
+            model.Sites = data.GetSites();
+
             return View("../Admin/CarCreate", model);
         }
 
@@ -102,7 +104,7 @@ namespace CarRent.Controllers
                     //        // TODO resize and save to database
                     //        var fileName = Path.GetFileName(file.FileName);
                     //        var path = Path.Combine("", fileName);
-                           
+
                     //        using (var stream = new FileStream(filePath, FileMode.Create))
                     //        {
                     //            file.CopyTo(stream);
@@ -110,7 +112,10 @@ namespace CarRent.Controllers
                     //        }
                     //    }
                     //}
-                    
+
+                    //var site = data.GetSite(model.CarFullDetail.Location.Name);
+                    //model.CarFullDetail.Location = site;
+
                     data.CreateOrUpdateCar(model.CarFullDetail);
                     return RedirectToAction("Index");
                 }
@@ -121,50 +126,25 @@ namespace CarRent.Controllers
                 return View();
             }
         }
-
-        //[HttpPost]
-        //public ActionResult UploadImageMethod()
-        //{
-        //    if (Request.Form.Files.Count != 0)
-        //    {
-        //        for (int i = 0; i < Request.Form.Files.Count; i++)
-        //        {
-        //            System.Web.
-
-        //            HttpUtility file = Request.Form.Files[i];
-        //            int fileSize = file.ContentLength;
-        //            string fileName = file.FileName;
-        //            file.SaveAs(Server.MapPath("~/Upload_Files/" + fileName));
-        //            ImageGallery imageGallery = new ImageGallery();
-        //            imageGallery.ID = Guid.NewGuid();
-        //            imageGallery.Name = fileName;
-        //            imageGallery.ImagePath = "~/Upload_Files/" + fileName;
-        //            db.ImageGallery.Add(imageGallery);
-        //            db.SaveChanges();
-        //        }
-        //        return Content("Success");
-        //    }
-        //    return Content("failed");
-        //}
         
-
         // TODO - file feltöltés és mentés adatbázisba??
         [HttpPost("UploadFiles")]
         public async Task<IActionResult> PostFiles(List<IFormFile> files)
         {
-            long size = files.Sum(f => f.Length);
+            //long size = files.Sum(f => f.Length);
 
+            // könyvtár ahova lementjük a file-t
+            // csak a file név és egyéb adatok a db-be
+            // wwwroot
             // full path to file in temp location
-            var filePath = Path.GetTempFileName();
-
+            
             foreach (var formFile in files)
             {
-                if (formFile.Length > 0)
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", formFile.FileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
                 {
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await formFile.CopyToAsync(stream);
-                    }
+                    await formFile.CopyToAsync(stream);
                 }
             }
 
@@ -172,17 +152,19 @@ namespace CarRent.Controllers
             // Don't rely on or trust the FileName property without validation.
             using (var memoryStream = new MemoryStream())
             {
-                //await model.AvatarImage.CopyToAsync(memoryStream);
-                //user.AvatarImage = memoryStream.ToArray();
-                ImageDTO image = new ImageDTO()
+                foreach( var file in files)
                 {
-                     Content = memoryStream.ToArray(),
-                     Name = files.First().Name,
-                    
-                };
+                    ImageDTO image = new ImageDTO()
+                    {
+                        Path = Path.Combine(Directory.GetCurrentDirectory(),
+                           "wwwroot", file.FileName),
+                        Name = file.Name,
+                    };
+                    data.SaveImage(image);
+                }
             }
 
-            return Ok(new { count = files.Count, size, filePath });
+            return View();
         }
 
         // GET: Car/Edit/5
@@ -195,6 +177,7 @@ namespace CarRent.Controllers
             }
 
             model = new CarViewModel();
+            model.Types = data.GetCarTypes();
             var car = data.GetCar(id);
 
             if (car == null)

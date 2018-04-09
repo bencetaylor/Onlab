@@ -89,10 +89,10 @@ namespace CarRent.DAL.Data
             // Creating cars and place them in site1
             var cars = new CarModel[]
             {
-            new CarModel{Brand="BMW 316i", NumberPlate="ABC123", Type="Sedan", Price=55000, Consuption=4, Site=site1, Doors=4, Passangers=5, Power=150, Trunk=400, State=CarState.Available},
-            new CarModel{Brand="BMW 330xd", NumberPlate="ABC321", Type="Sedan", Price=80000, Site=site1},
-            new CarModel{Brand="BMW 320d", NumberPlate="ABC456", Type="Sedan", Price=60000, Site=site1},
-            new CarModel{Brand="BMW 318d touring", NumberPlate="ABC789", Type="Combi", Price=70000, Site=site1},
+            new CarModel{Brand="BMW 316i", NumberPlate="ABC123", Type=CarTypes.Types.Sedan, Price=55000, Consuption=4, Site=site1, Doors=4, Passangers=5, Power=150, Trunk=400, State=CarState.Available},
+            new CarModel{Brand="BMW 330xd", NumberPlate="ABC321", Type=CarTypes.Types.Sedan, Price=80000, Site=site1},
+            new CarModel{Brand="BMW 320d", NumberPlate="ABC456", Type=CarTypes.Types.Sedan, Price=60000, Site=site1},
+            new CarModel{Brand="BMW 318d touring", NumberPlate="ABC789", Type=CarTypes.Types.Hatchback, Price=70000, Site=site1},
             };
             foreach (CarModel c in cars)
             {

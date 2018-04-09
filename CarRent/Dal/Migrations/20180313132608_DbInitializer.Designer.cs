@@ -132,7 +132,7 @@ namespace CarRent.DAL.Migrations
 
                     b.Property<int?>("CarID");
 
-                    b.Property<byte[]>("Content");
+                    b.Property<byte[]>("Path");
 
                     b.Property<string>("Name");
 

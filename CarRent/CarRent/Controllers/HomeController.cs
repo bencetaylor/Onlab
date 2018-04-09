@@ -7,14 +7,39 @@ using Microsoft.AspNetCore.Mvc;
 using CarRent.Models;
 using CarRent.DAL.Models;
 using Microsoft.AspNetCore.Identity;
+using CarRent.Models.HomeViewModels;
+using CarRent.Models.DataViewModels;
 
 namespace CarRent.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly DataController data;
+        private HomeViewModel model;
+
+        public HomeController()
+        {
+            data = new DataController();
+        }
+
         public IActionResult Index()
         {
-            return View();
+            model = new HomeViewModel();
+            var cars = data.GetTopCars();
+            foreach(var c in cars)
+            {
+                model.cars.Add(c);
+            }
+
+            return View(model);
+        }
+
+        public IActionResult CarDetails(int id)
+        {
+            var model = new CarViewModel();
+            model.CarFullDetail = data.GetCar(id);
+
+            return View("../Home/CarDetails", model);
         }
 
         public IActionResult About()

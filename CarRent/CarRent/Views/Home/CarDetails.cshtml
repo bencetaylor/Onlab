@@ -1,0 +1,76 @@
+﻿@model CarRent.Models.DataViewModels.CarViewModel
+
+@{
+    ViewData["Title"] = "CarDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>CarDetails</h2>
+
+<div>
+    <h4>@Model.CarFullDetail.Brand</h4>
+    <hr />
+    <dl class="dl-horizontal">
+    </dl>
+</div>
+
+<div class="container">
+    <h5 class="row">Details</h5>
+    <div class="row">
+        <div class="col">
+            <table class="w-100 table">
+                <tr>
+                    <th>Brand:</th>
+                    <td>@Model.CarFullDetail.Brand</td>
+                </tr>
+                <tr>
+                    <th>Type:</th>
+                    <td>@Model.CarFullDetail.Type</td>
+                </tr>
+                <tr>
+                    <th>Trunk:</th>
+                    <td>@Model.CarFullDetail.Trunk l</td>
+                </tr>
+                <tr>
+                    <th>Doors</th>
+                    <td>@Model.CarFullDetail.Doors</td>
+                </tr>
+                <tr>
+                    <th>Power</th>
+                    <td>@Model.CarFullDetail.Power HP</td>
+                </tr>
+                <tr>
+                    <th>Passangers</th>
+                    <td>@Model.CarFullDetail.Passangers</td>
+                </tr>
+                <tr> 
+                    <th>Price</th>
+                    <td>@Model.CarFullDetail.Price Ft/day</td>
+                </tr>
+            </table>
+            <div>
+                <a asp-area="" asp-controller="Rent" asp-action="Create" class="btn btn-outline-primary btn-block">Rent</a>
+            </div>
+        </div>
+        
+        <div class="col">
+            <h6>Images</h6>
+            <div class="row">
+                <img src="http://via.placeholder.com/400x400"/>
+            </div>
+
+            <h6>Location Map</h6>
+            <div class="row">
+                <img src="http://via.placeholder.com/400x400" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <h6>Description</h6>
+        <text>@Model.CarFullDetail.Description</text>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to Home page</a>
+</div>

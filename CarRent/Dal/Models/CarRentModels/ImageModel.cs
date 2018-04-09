@@ -15,7 +15,7 @@ namespace CarRent.DAL.Models.CarRentModels
         public CarModel Car { get; set; }
 
         public String Name { get; set; }
-        public byte[] Content { get; set; }
+        public String Path { get; set; }
 
         public ImageModel()
         {

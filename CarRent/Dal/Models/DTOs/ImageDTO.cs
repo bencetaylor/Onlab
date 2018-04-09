@@ -11,7 +11,7 @@ namespace CarRent.DAL.Models.DTOs
         public CarModel Car { get; set; }
 
         public String Name { get; set; }
-        public byte[] Content { get; set; }
+        public String Path { get; set; }
 
         public ImageDTO()
         {

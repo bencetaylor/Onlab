@@ -9,6 +9,8 @@ using CarRent.DAL.Models;
 using CarRent.DAL.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace CarRent
 {
@@ -61,6 +63,10 @@ namespace CarRent
                 options.AccessDeniedPath = "/Account/AccessDenied"; // If the AccessDeniedPath is not set here, ASP.NET Core will default to /Account/AccessDenied
                 options.SlidingExpiration = true;
             });
+
+            services.AddSingleton<IFileProvider>(
+                new PhysicalFileProvider(
+                    Path.Combine(Directory.GetCurrentDirectory(), "wwwroot")));
 
             // Add application services.
             services.AddTransient<IEmailSender, EmailSender>();

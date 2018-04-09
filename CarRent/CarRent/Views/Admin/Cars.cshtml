@@ -10,7 +10,7 @@
 
 <div>
     <table class="table">
-        <thead>
+        <thead class="thead-dark">
             <tr>
                 <th>
                     Brand
@@ -50,8 +50,8 @@
                         @Html.DisplayFor(modelItem => item.Type)
                     </td>
                     <td> 
-                        <a asp-area="" asp-controller="Car" asp-action="Edit" asp-route-id="@item.CarID">Edit</a> |
-                        <a asp-area="" asp-controller="Car" asp-action="Delete" asp-route-id="@item.CarID">Delete</a>
+                        <a asp-area="" asp-controller="Car" asp-action="Edit" asp-route-id="@item.CarID" class="btn btn-sm btn-light">Edit</a> 
+                        <a asp-area="" asp-controller="Car" asp-action="Delete" asp-route-id="@item.CarID" class="btn btn-sm btn-danger">Delete</a>
                     </td>
                 </tr>
             }
