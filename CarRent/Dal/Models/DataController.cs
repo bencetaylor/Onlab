@@ -1,6 +1,7 @@
 ﻿using CarRent.DAL.Data;
 using CarRent.DAL.Models.CarRentModels;
 using CarRent.DAL.Models.DTOs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -161,14 +162,20 @@ namespace CarRent.DAL.Models
         {
             // Itt törölni kell a képeket és kommenteket is amik az autóhoz tartoznak
             var car = context.Cars.Find(id);
-            foreach(var img in car.Images)
-            {
-                if (File.Exists(img.Path))
-                {
-                    File.Delete(img.Path);
-                }
-                context.Images.Remove(img);
-            }
+
+            var image = car.Images.First();
+            context.Images.Remove(image);
+            context.SaveChanges();
+
+            //foreach (var img in car.Images)
+            //{
+            //    //if (File.Exists(img.Path))
+            //    //{
+            //    //    File.Delete(img.Path);
+            //    //}
+            //    context.Images.Remove(img);
+            //    context.SaveChanges();
+            //}
             foreach(var comment in car.Comments)
             {
                 context.Comments.Remove(comment);
@@ -179,10 +186,10 @@ namespace CarRent.DAL.Models
             context.SaveChanges();
         }
 
-        public void CreateOrUpdateCar(CarDetailsDTO c)
+        public void CreateOrUpdateCar(CarDetailsDTO c, List<IFormFile> images)
         {
             var site = c.Location;
-
+            
             var carmodel = new CarRentModels.CarModel()
             {
                 Brand = c.Brand,
@@ -203,6 +210,27 @@ namespace CarRent.DAL.Models
                 Type = c.Type
             };
 
+            if(images != null)
+            {
+                foreach (var formFile in images)
+                {
+                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", formFile.FileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        formFile.CopyToAsync(stream);
+                    }
+                    var image = new ImageModel()
+                    {
+                        Car = carmodel,
+                        Path = filePath,
+                        Name = formFile.Name
+                    };
+                    context.Images.Add(image);
+                    carmodel.Images.Add(image);
+                }
+            }
+            
             if (context.Cars.Any(car => car.CarID == carmodel.CarID))
             {
                 context.Cars.Update(carmodel);
@@ -375,20 +403,21 @@ namespace CarRent.DAL.Models
             context.SaveChanges();
         }
 
-        public void SaveImage(ImageDTO _image)
+        public void SaveImages(List<ImageDTO> images, int CarID)
         {
-            var image = new ImageModel()
+            var car = context.Cars.Find(CarID);
+            foreach (var img in images)
             {
-                Car = _image.Car,
-                Name = _image.Name,
-                Path = _image.Path
-            };
-            var car = image.Car;
-            car.Images.Add(image);
-
+                var image = new ImageModel()
+                {
+                    Car = img.Car,
+                    Name = img.Name,
+                    Path = img.Path
+                };
+                context.Images.Add(image);
+                car.Images.Add(image);
+            }
             context.Cars.Update(car);
-            
-            context.Images.Add(image);
             context.SaveChanges();
         }
 

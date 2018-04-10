@@ -31,13 +31,13 @@
                         @Html.DisplayFor(modelItem => item.Address)
                     </td>
                     <td>
-                        <a asp-area="" asp-controller="Site" asp-action="Details" asp-route-id="@item.SiteID" class="btn btn-light btn-sm">Details</a>
+                        <a asp-area="" asp-controller="Site" asp-action="Details" asp-route-id="@item.SiteID" class="btn btn-outline-dark btn-sm">Details</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
     <div>
-        <a asp-area="" asp-controller="Site" asp-action="Create" class="btn btn-light">Create</a>
+        <a asp-area="" asp-controller="Site" asp-action="Create" class="btn btn-outline-primary">Create</a>
     </div>
 </div>

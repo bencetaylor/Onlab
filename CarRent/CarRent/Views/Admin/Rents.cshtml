@@ -37,15 +37,15 @@
                         @Html.DisplayFor(modelItem => item.RentEnds.Date)
                     </td>
                     <td>
-                        <a asp-area="" asp-controller="Rent" asp-action="Edit" asp-route-id="@item.RentID">Edit</a> |
-                        <a asp-area="" asp-controller="Rent" asp-action="Details" asp-route-id="@item.RentID">Details</a> |
-                        <a asp-area="" asp-controller="Rent" asp-action="Delete" asp-route-id="@item.RentID">Delete</a>
+                        <a asp-area="" asp-controller="Rent" asp-action="Edit" asp-route-id="@item.RentID" class="btn btn-outline-dark btn-sm">Edit</a> |
+                        <a asp-area="" asp-controller="Rent" asp-action="Details" asp-route-id="@item.RentID" class="btn btn-outline-dark btn-sm">Details</a> |
+                        <a asp-area="" asp-controller="Rent" asp-action="Delete" asp-route-id="@item.RentID" class="btn btn-danger btn-sm">Delete</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
     <div>
-        <a asp-area="" asp-controller="Rent" asp-action="Create" class="btn btn-light">Create</a>
+        <a asp-area="" asp-controller="Rent" asp-action="Create" class="btn btn-outline-primary">Create</a>
     </div>
 </div>

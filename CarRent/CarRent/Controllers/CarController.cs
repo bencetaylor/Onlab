@@ -101,32 +101,11 @@ namespace CarRent.Controllers
 
                     // Valamiért a site null marad és nem lehet hozzáadni az autóhoz...
                     //var site = model.CarFullDetail.Location;
-
-
+                    
                     // Addig minden autó a Site1-be kerül
                     model.CarFullDetail.Location = data.GetSiteByID(1);
 
-                    data.CreateOrUpdateCar(model.CarFullDetail);
-
-                    var imageList = new List<ImageDTO>();
-
-                    // Képek feltöltése
-                    foreach (var formFile in images)
-                    {
-                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", formFile.FileName);
-
-                        using (var stream = new FileStream(filePath, FileMode.Create))
-                        {
-                            formFile.CopyToAsync(stream);
-                        }
-                        var image = new ImageDTO()
-                        {
-                            Car = data.FindCar(model.CarFullDetail.CarID),
-                            Path = filePath,
-                            Name = formFile.Name
-                        };
-                        data.SaveImage(image);
-                    }
+                    data.CreateOrUpdateCar(model.CarFullDetail, images);
                     
                     return RedirectToAction("Index");
                 }
@@ -136,51 +115,6 @@ namespace CarRent.Controllers
             {
                 return RedirectToAction("Index");
             }
-        }
-        
-        // TODO - file feltöltés és mentés adatbázisba??
-        [HttpPost("UploadFiles")]
-        public async Task<IActionResult> PostFiles(List<IFormFile> files)
-        {
-            // könyvtár ahova lementjük a file-t
-            // csak a file név és egyéb adatok a db-be
-            // wwwroot
-            // full path to file in temp location
-            
-            foreach (var formFile in files)
-            {
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", formFile.FileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await formFile.CopyToAsync(stream);
-                }
-                var image = new ImageDTO()
-                {
-                    Path = filePath,
-                    Name = formFile.Name
-                };
-                data.SaveImage(image);
-            }
-
-
-            // process uploaded files
-            // Don't rely on or trust the FileName property without validation.
-            //using (var memoryStream = new MemoryStream())
-            //{
-            //    foreach( var file in files)
-            //    {
-            //        ImageDTO image = new ImageDTO()
-            //        {
-            //            Path = Path.Combine(Directory.GetCurrentDirectory(),
-            //               "wwwroot", file.FileName),
-            //            Name = file.Name,
-            //        };
-            //        data.SaveImage(image);
-            //    }
-            //}
-
-            return View();
         }
 
         // GET: Car/Edit/5
@@ -194,6 +128,7 @@ namespace CarRent.Controllers
 
             model = new CarViewModel();
             model.Types = data.GetCarTypes();
+            model.Sites = data.GetSites();
             var car = data.GetCar(id);
 
             if (car == null)
@@ -205,7 +140,7 @@ namespace CarRent.Controllers
         // POST: Car/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, CarViewModel model)
+        public ActionResult Edit(CarViewModel model, List<IFormFile> images)
         {
             if (!User.IsInRole("ADMIN"))
             {
@@ -217,7 +152,8 @@ namespace CarRent.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    data.CreateOrUpdateCar(model.CarFullDetail);
+                    model.CarFullDetail.Location = data.GetSiteByID(1);
+                    data.CreateOrUpdateCar(model.CarFullDetail, images);
                     return RedirectToAction("Index");
                 }
                 return RedirectToAction(nameof(Index));

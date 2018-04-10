@@ -26,6 +26,8 @@ namespace CarRent.Controllers
         {
             model = new HomeViewModel();
             var cars = data.GetTopCars();
+            model.mainCar = cars.First();
+            cars.RemoveAt(0);
             foreach(var c in cars)
             {
                 model.cars.Add(c);

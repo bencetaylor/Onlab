@@ -50,7 +50,7 @@
                         @Html.DisplayFor(modelItem => item.Type)
                     </td>
                     <td> 
-                        <a asp-area="" asp-controller="Car" asp-action="Edit" asp-route-id="@item.CarID" class="btn btn-sm btn-light">Edit</a>
+                        <a asp-area="" asp-controller="Car" asp-action="Edit" asp-route-id="@item.CarID" class="btn btn-sm btn-outline-dark">Edit</a>
                         
                         <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#myModal" disabled>
                             Delete
@@ -90,6 +90,6 @@
         </tbody>
     </table>
     <div>
-        <a asp-area="" asp-controller="Car" asp-action="Create" class="btn btn-light">Create</a>
+        <a asp-area="" asp-controller="Car" asp-action="Create" class="btn btn-outline-primary">Create</a>
     </div>
 </div>

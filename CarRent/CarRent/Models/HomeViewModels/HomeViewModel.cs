@@ -9,10 +9,12 @@ namespace CarRent.Models.HomeViewModels
     public class HomeViewModel
     {
         public List<CarDTO> cars;
+        public CarDTO mainCar;
 
         public HomeViewModel()
         {
             cars = new List<CarDTO>();
+            mainCar = new CarDTO();
         }
     }
 }

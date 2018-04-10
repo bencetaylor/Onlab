@@ -6,7 +6,8 @@
 
 <h1>Most popular cars</h1>
 <div class="container">
-    <table class="table">
+    <!--
+       <table class="table">
         <thead>
             <tr>
                 <th>
@@ -22,23 +23,51 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.cars)
+            foreach (var item in Model.cars)
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Brand)
+                        Html.DisplayFor(modelItem => item.Brand)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Price)
+                        Html.DisplayFor(modelItem => item.Price)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Type)
+                        Html.DisplayFor(modelItem => item.Type)
                     </td>
                     <td>
-                        <a asp-area="" asp-controller="Home" asp-action="CarDetails" asp-route-id="@item.CarID" class="btn btn-sm btn-light">Details</a>
+                        <a asp-area="" asp-controller="Home" asp-action="CarDetails" asp-route-id="item.CarID" class="btn btn-sm btn-light">Details</a>
                     </td>
                 </tr>
             }
         </tbody>
-    </table>
+    </table> 
+    
+        -->
+    <div class="row">
+        <div class="col-12 align-content-center">
+            <div class="row">
+                <a asp-area="" asp-controller="Home" asp-action="CarDetails" asp-route-id="@Model.mainCar.CarID" class="btn btn-sm btn-light">
+                    <img src="http://via.placeholder.com/600x400" />
+                </a>
+            </div>
+            <div class="row">@Model.mainCar.Brand</div>
+            <div class="row">@Model.mainCar.Price Ft/day</div>
+        </div>
+    </div>
+    <div class="row">
+        @foreach (var car in Model.cars)
+        {
+            <div class="col">
+                <div class="row">
+                    <a asp-area="" asp-controller="Home" asp-action="CarDetails" asp-route-id="@car.CarID" class="btn btn-sm btn-light">
+                        <img src="http://via.placeholder.com/150x100" />
+                    </a>
+                </div>
+                <div class="row">@car.Brand</div>
+                <div class="row">@car.Price Ft/day</div>
+            </div>
+        }
+    </div>
+   
 </div>
