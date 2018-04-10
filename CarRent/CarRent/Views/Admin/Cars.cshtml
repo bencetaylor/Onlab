@@ -52,7 +52,7 @@
                     <td> 
                         <a asp-area="" asp-controller="Car" asp-action="Edit" asp-route-id="@item.CarID" class="btn btn-sm btn-outline-dark">Edit</a>
                         
-                        <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#myModal" disabled>
+                        <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#myModal">
                             Delete
                         </button>
                         <!-- The Modal -->
@@ -75,15 +75,17 @@
                                         <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                                         -->
                                     <div class="modal-footer">
-                                        <!-- De itt bent SQL Exception keletkezik (FK_Constraint in dbo.Rents???) -->
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                        <!-- De itt bent SQL Exception keletkezik (FK_Constraint in dbo.Rents???) 
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>-->
+                                        
+                                        <a asp-area="" asp-controller="Car" asp-action="Delete" asp-route-id="@item.CarID" class="btn btn-sm btn-danger">Delete</a>
                                     </div>
 
                                 </div>
                             </div>
                         </div>
                         <!-- Ha itt van kint a conroller hívás, működik -->
-                        <a asp-area="" asp-controller="Car" asp-action="Delete" asp-route-id="@item.CarID" class="btn btn-sm btn-danger">Delete</a>
+                        
                     </td>
                 </tr>
             }

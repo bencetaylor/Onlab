@@ -142,7 +142,7 @@ namespace CarRent.DAL.Models
                     Trunk = c.Trunk,
                     Type = c.Type,
                     Description = c.Description,
-                    //Images = c.Images,
+                    Images = c.Images,
                     //Comments = c.Comments
                 }).First();
             return car;
@@ -163,8 +163,12 @@ namespace CarRent.DAL.Models
             // Itt törölni kell a képeket és kommenteket is amik az autóhoz tartoznak
             var car = context.Cars.Find(id);
 
-            var image = car.Images.First();
-            context.Images.Remove(image);
+            var images = car.Images.ToList();
+            if(images !=null && images.Count()>0)
+            {
+                context.Images.RemoveRange(images);
+            }
+            
             context.SaveChanges();
 
             //foreach (var img in car.Images)
@@ -186,11 +190,31 @@ namespace CarRent.DAL.Models
             context.SaveChanges();
         }
 
-        public void CreateOrUpdateCar(CarDetailsDTO c, List<IFormFile> images)
+        public async void CreateOrUpdateCar(CarDetailsDTO c, List<IFormFile> images)
         {
+            //var imageModels = new List<ImageModel>();
+            //if (images != null)
+            //{
+            //    foreach (var formFile in images)
+            //    {
+            //        imageModels.Add(new ImageModel()
+            //        {
+            //            Path = formFile.FileName,
+            //            Name = formFile.Name
+            //        });
+            //    }
+            //}
+
             var site = c.Location;
-            
-            var carmodel = new CarRentModels.CarModel()
+
+            CarModel carmodel;
+
+            //if()
+            //{
+            //    carModel = 
+            //}
+
+            carmodel = new CarRentModels.CarModel()
             {
                 Brand = c.Brand,
                 CarID = c.CarID,
@@ -198,7 +222,7 @@ namespace CarRent.DAL.Models
                 Consuption = c.Consuption,
                 Description = c.Description,
                 Doors = c.Doors,
-                Images = c.Images,
+                // Images = c.Images,
                 // TODO Location not working 
                 Site = c.Location,
                 NumberPlate = c.NumberPlate,
@@ -218,7 +242,7 @@ namespace CarRent.DAL.Models
 
                     using (var stream = new FileStream(filePath, FileMode.Create))
                     {
-                        formFile.CopyToAsync(stream);
+                        await formFile.CopyToAsync(stream);
                     }
                     var image = new ImageModel()
                     {
@@ -227,7 +251,7 @@ namespace CarRent.DAL.Models
                         Name = formFile.Name
                     };
                     context.Images.Add(image);
-                    carmodel.Images.Add(image);
+                    //carmodel.Images.Add(image);
                 }
             }
             
