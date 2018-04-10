@@ -171,16 +171,16 @@ namespace CarRent.DAL.Models
             
             context.SaveChanges();
 
-            //foreach (var img in car.Images)
-            //{
-            //    //if (File.Exists(img.Path))
-            //    //{
-            //    //    File.Delete(img.Path);
-            //    //}
-            //    context.Images.Remove(img);
-            //    context.SaveChanges();
-            //}
-            foreach(var comment in car.Comments)
+            foreach (var img in car.Images)
+            {
+                if (File.Exists(img.Path))
+                {
+                    File.Delete(img.Path);
+                }
+                context.Images.Remove(img);
+                context.SaveChanges();
+            }
+            foreach (var comment in car.Comments)
             {
                 context.Comments.Remove(comment);
             }
@@ -190,31 +190,18 @@ namespace CarRent.DAL.Models
             context.SaveChanges();
         }
 
-        public async void CreateOrUpdateCar(CarDetailsDTO c, List<IFormFile> images)
+        public void CreateOrUpdateCar(CarDetailsDTO c, List<ImageDTO> images)
         {
-            //var imageModels = new List<ImageModel>();
-            //if (images != null)
-            //{
-            //    foreach (var formFile in images)
-            //    {
-            //        imageModels.Add(new ImageModel()
-            //        {
-            //            Path = formFile.FileName,
-            //            Name = formFile.Name
-            //        });
-            //    }
-            //}
-
             var site = c.Location;
 
-            CarModel carmodel;
+            CarModel carModel;
 
             //if()
             //{
             //    carModel = 
             //}
 
-            carmodel = new CarRentModels.CarModel()
+            carModel = new CarModel()
             {
                 Brand = c.Brand,
                 CarID = c.CarID,
@@ -222,7 +209,6 @@ namespace CarRent.DAL.Models
                 Consuption = c.Consuption,
                 Description = c.Description,
                 Doors = c.Doors,
-                // Images = c.Images,
                 // TODO Location not working 
                 Site = c.Location,
                 NumberPlate = c.NumberPlate,
@@ -236,51 +222,30 @@ namespace CarRent.DAL.Models
 
             if(images != null)
             {
-                foreach (var formFile in images)
+                foreach (var img in images)
                 {
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", formFile.FileName);
-
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await formFile.CopyToAsync(stream);
-                    }
                     var image = new ImageModel()
                     {
-                        Car = carmodel,
-                        Path = filePath,
-                        Name = formFile.Name
+                        Car = carModel,
+                        Path = img.Path,
+                        Name = img.Name
                     };
                     context.Images.Add(image);
-                    //carmodel.Images.Add(image);
                 }
             }
             
-            if (context.Cars.Any(car => car.CarID == carmodel.CarID))
+            if (context.Cars.Any(car => car.CarID == carModel.CarID))
             {
-                context.Cars.Update(carmodel);
+                context.Cars.Update(carModel);
             }
             else
             {
-                context.Cars.Add(carmodel);
+                context.Cars.Add(carModel);
             }
 
-            site.Cars.Add(carmodel);
+            site.Cars.Add(carModel);
             context.Sites.Update(site);
 
-            context.SaveChanges();
-        }
-
-        public void UploadImage(ImageDTO dto)
-        {
-            var image = new ImageModel()
-            {
-                ImageID = dto.ImageID,
-                Name = dto.Name,
-                Path = dto.Path,
-                Car = dto.Car
-            };
-
-            context.Images.Add(image);
             context.SaveChanges();
         }
 

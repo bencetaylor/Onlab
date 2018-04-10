@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Identity;
 using CarRent.Models;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
 
 namespace CarRent.Controllers
@@ -18,7 +17,7 @@ namespace CarRent.Controllers
         private CarViewModel model;
 
         // TODO context only in DAL project
-        public CarController(UserManager<ApplicationUser> _userManager)
+        public CarController()
         {
             data = new DataController();
         }
@@ -83,15 +82,13 @@ namespace CarRent.Controllers
         // POST: Car/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(CarViewModel model, List<IFormFile> images)
+        public async Task<ActionResult> Create(CarViewModel model, List<IFormFile> images)
         {
             if (!User.IsInRole("ADMIN"))
             {
                 var errorModel = new ErrorViewModel();
                 return View("../Shared/Error", errorModel);
             }
-            
-            
             try
             {
                 if (ModelState.IsValid)
@@ -105,7 +102,25 @@ namespace CarRent.Controllers
                     // Addig minden autó a Site1-be kerül
                     model.CarFullDetail.Location = data.GetSiteByID(1);
 
-                    data.CreateOrUpdateCar(model.CarFullDetail, images);
+                    var imageList = new List<ImageDTO>();
+
+                    foreach (var formFile in images)
+                    {
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", formFile.FileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await formFile.CopyToAsync(stream);
+                        }
+
+                        imageList.Add(new ImageDTO()
+                        {
+                            Path = formFile.FileName,
+                            Name = formFile.Name
+                        });
+                    }
+
+                    data.CreateOrUpdateCar(model.CarFullDetail, imageList);
                     
                     return RedirectToAction("Index");
                 }
@@ -140,7 +155,7 @@ namespace CarRent.Controllers
         // POST: Car/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(CarViewModel model, List<IFormFile> images)
+        public async Task<ActionResult> Edit(CarViewModel model, List<IFormFile> images)
         {
             if (!User.IsInRole("ADMIN"))
             {
@@ -153,7 +168,26 @@ namespace CarRent.Controllers
                 if (ModelState.IsValid)
                 {
                     model.CarFullDetail.Location = data.GetSiteByID(1);
-                    data.CreateOrUpdateCar(model.CarFullDetail, images);
+
+                    var imageList = new List<ImageDTO>();
+
+                    foreach (var formFile in images)
+                    {
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", formFile.FileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await formFile.CopyToAsync(stream);
+                        }
+
+                        imageList.Add(new ImageDTO()
+                        {
+                            Path = formFile.FileName,
+                            Name = formFile.Name
+                        });
+                    }
+
+                    data.CreateOrUpdateCar(model.CarFullDetail, imageList);
                     return RedirectToAction("Index");
                 }
                 return RedirectToAction(nameof(Index));
@@ -163,59 +197,8 @@ namespace CarRent.Controllers
                 return View();
             }
         }
-
-        /*
-        // GET: Car/Delete/5
-        public ActionResult Delete(int id)
-        {
-            if (!User.IsInRole("ADMIN"))
-            {
-                var errorModel = new ErrorViewModel();
-                return View("../Shared/Error", errorModel);
-            }
-            model = new CarViewModel();
-            var car = data.GetCar(id);
-
-            if (car == null)
-                return NotFound();
-            model.CarFullDetail = car;
-            return View("../Admin/CarDelete", model);
-        }
         
-
-        // POST: Car/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            if (!User.IsInRole("ADMIN"))
-            {
-                var errorModel = new ErrorViewModel();
-                return View("../Shared/Error", errorModel);
-            }
-            
-            data.DeleteCar(id);
-            return RedirectToAction("Index");
-        }
-        */
-        /*
-            // POST: Car/Delete/5
-            [HttpPost]
-            public ActionResult Delete(int id)
-            {
-                if (!User.IsInRole("ADMIN"))
-                {
-                    var errorModel = new ErrorViewModel();
-                    return View("../Shared/Error", errorModel);
-                }
-
-                data.DeleteCar(id);
-                return RedirectToAction("Index");
-            }
-            */
-
-
-        // GET: Car/Delete/5
+        // Post: Car/Delete/5
         public ActionResult Delete(int id)
         {
             if (!User.IsInRole("ADMIN"))
@@ -226,6 +209,16 @@ namespace CarRent.Controllers
             var car = data.GetCar(id);
             if (car == null)
                 return NotFound();
+
+            foreach (var img in car.Images)
+            {
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", img.Path);
+
+                if (System.IO.File.Exists(filePath))
+                {
+                    System.IO.File.Delete(filePath);
+                }
+            }
 
             data.DeleteCar(id);
             return RedirectToAction("Index");
