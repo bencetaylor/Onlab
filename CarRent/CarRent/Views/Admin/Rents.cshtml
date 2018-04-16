@@ -39,7 +39,29 @@
                     <td>
                         <a asp-area="" asp-controller="Rent" asp-action="Edit" asp-route-id="@item.RentID" class="btn btn-outline-dark btn-sm">Edit</a> |
                         <a asp-area="" asp-controller="Rent" asp-action="Details" asp-route-id="@item.RentID" class="btn btn-outline-dark btn-sm">Details</a> |
-                        <a asp-area="" asp-controller="Rent" asp-action="Delete" asp-route-id="@item.RentID" class="btn btn-danger btn-sm">Delete</a>
+                        @*<a asp-area="" asp-controller="Rent" asp-action="Delete" asp-route-id="@item.RentID" class="btn btn-danger btn-sm">Delete</a>*@
+                        <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#@item.RentID">
+                            Delete
+                        </button>
+                        <!-- The Modal -->
+                        <div class="modal fade" id="@item.RentID">
+                            <div class="modal-dialog modal-sm modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Delete Rent</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Do you really want to delete @item.RentID rent?
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <a asp-area="" asp-controller="Rent" asp-action="Delete" asp-route-id="@item.RentID" class="btn btn-danger btn-sm">Delete</a>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                     </td>
                 </tr>
             }

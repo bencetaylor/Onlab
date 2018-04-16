@@ -44,7 +44,7 @@ namespace CarRent.Controllers
         }
 
         // GET: Car/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
             if (User.IsInRole("ADMIN"))
             {
@@ -54,6 +54,19 @@ namespace CarRent.Controllers
                 if (car == null)
                     return NotFound();
                 model.CarFullDetail = car;
+                var images = new List<FileStreamResult>();
+                foreach(var img in car.Images)
+                {
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", model.CarFullDetail.NumberPlate, img.Path);
+                    var memory = new MemoryStream();
+                    using(var stream = new FileStream(path, FileMode.Open))
+                    {
+                        await stream.CopyToAsync(memory);
+                    }
+                    // TODO - file type
+                    var file = File(memory,"", Path.GetFileName(path));
+                    images.Add(file);
+                }
                 return View("../Admin/CarDetail", model);
             }
             else
@@ -106,7 +119,7 @@ namespace CarRent.Controllers
 
                     foreach (var formFile in images)
                     {
-                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", formFile.FileName);
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", model.CarFullDetail.NumberPlate, formFile.FileName);
 
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
@@ -116,7 +129,7 @@ namespace CarRent.Controllers
                         imageList.Add(new ImageDTO()
                         {
                             Path = formFile.FileName,
-                            Name = formFile.Name
+                            Name = formFile.FileName
                         });
                     }
 
