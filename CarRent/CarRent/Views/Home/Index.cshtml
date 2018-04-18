@@ -6,66 +6,39 @@
 
 <h1>Most popular cars</h1>
 <div class="container">
-    <!--
-       <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Brand
-                </th>
-                <th>
-                    Price
-                </th>
-                <th>
-                    Type
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            foreach (var item in Model.cars)
-            {
-                <tr>
-                    <td>
-                        Html.DisplayFor(modelItem => item.Brand)
-                    </td>
-                    <td>
-                        Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        Html.DisplayFor(modelItem => item.Type)
-                    </td>
-                    <td>
-                        <a asp-area="" asp-controller="Home" asp-action="CarDetails" asp-route-id="item.CarID" class="btn btn-sm btn-light">Details</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table> 
     
-        -->
     <div class="row">
         <div class="col-12 align-content-center">
-            <div class="row">
-                <a asp-area="" asp-controller="Home" asp-action="CarDetails" asp-route-id="@Model.mainCar.CarID" class="btn btn-sm btn-light">
-                    <img src="http://via.placeholder.com/600x400" />
-                </a>
+            <div class="card" style="margin: 50px">
+                <div class="card-body">
+                    <div class="row">
+                        <a asp-area="" asp-controller="Home" asp-action="CarDetails" asp-route-id="@Model.mainCar.CarID" class="btn btn-sm btn-light">
+                            <img src="http://via.placeholder.com/800x530" width="800" height="530"/>
+                            @*<img src="~/images/@Model.mainCar.Image.Path" width="800" height="530" />*@
+                        </a>
+                    </div>
+                    <div class="row">@Model.mainCar.Brand</div>
+                    <div class="row">@Model.mainCar.Price Ft/day</div>
+                </div>
             </div>
-            <div class="row">@Model.mainCar.Brand</div>
-            <div class="row">@Model.mainCar.Price Ft/day</div>
         </div>
     </div>
     <div class="row">
         @foreach (var car in Model.cars)
         {
             <div class="col">
-                <div class="row">
-                    <a asp-area="" asp-controller="Home" asp-action="CarDetails" asp-route-id="@car.CarID" class="btn btn-sm btn-light">
-                        <img src="http://via.placeholder.com/150x100" />
-                    </a>
+                <div class="card" style="margin: 20px">
+                    <div class="card-body">
+                        <div class="row">
+                            <a asp-area="" asp-controller="Home" asp-action="CarDetails" asp-route-id="@car.CarID" class="btn btn-sm btn-light">
+                                <img src="http://via.placeholder.com/150x100" width="150" height="100"/>
+                                @*<img src="~/images/@car.Image.Path" width="150" height="100" />*@
+                            </a>
+                        </div>
+                        <div class="row">@car.Brand</div>
+                        <div class="row">@car.Price Ft/day</div>
+                    </div>
                 </div>
-                <div class="row">@car.Brand</div>
-                <div class="row">@car.Price Ft/day</div>
             </div>
         }
     </div>

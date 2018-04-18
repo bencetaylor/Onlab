@@ -38,8 +38,13 @@ namespace CarRent.Controllers
             }
             else
             {
-                // TODO - user cars view
-                return View("../Home/Index");
+                model = new CarViewModel();
+                var cars = data.GetCars();
+                foreach (var c in cars)
+                {
+                    model.Cars.Add(c);
+                }
+                return View("../User/Cars", model);
             }
         }
 
