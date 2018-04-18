@@ -1,0 +1,56 @@
+﻿body {
+}
+
+/* Make the image fully responsive */
+.carousel-inner img {
+    align-self: center;
+    width: 100%;
+    height: 100%;
+}
+
+.carousel-inner {
+    /*display: flex;
+    align-items: center;*/
+    /*background-color: black;*/
+}
+
+.card {
+    margin: 30px;
+}
+
+.description {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+#mycarousel {
+    width: 400px;
+    height: 300px;
+    background-color: black;
+}
+
+.row img {
+    align-self: center;
+    width: 100%;
+    height: 100%;
+}
+
+#homeMainBtn {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#homeMainBrand {
+    position: absolute;
+    bottom: 100px;
+    left: 50px;
+    font-size: 2.5vw;
+}
+
+#homeMainPrice {
+    position: absolute;
+    bottom: 50px;
+    left: 50px;
+    font-size: 2vw;
+}
