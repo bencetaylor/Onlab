@@ -123,7 +123,13 @@ namespace CarRent.Controllers
 
                     foreach (var formFile in images)
                     {
+                        var directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", model.CarFullDetail.NumberPlate);
                         var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", model.CarFullDetail.NumberPlate, formFile.FileName);
+
+                        if (!Directory.Exists(directoryPath))
+                        {
+                            Directory.CreateDirectory(directoryPath);
+                        }
 
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
