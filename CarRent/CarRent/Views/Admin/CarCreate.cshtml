@@ -16,7 +16,7 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="CarFullDetail.CarID" />
     <div class="row">
-        <div class="col">
+        <div class="col" style="margin: 20px;">
             <div class="form-group row">
                 <label asp-for="CarFullDetail.Brand" class="control-label"></label>
                 <input asp-for="CarFullDetail.Brand" class="form-control" />
@@ -68,7 +68,7 @@
                 <span asp-validation-for="CarFullDetail.Consuption" class="text-danger"></span>
             </div>
         </div>
-        <div class="col" >
+        <div class="col" style="margin: 20px;">
             <div class="form-group row">
                 <label asp-for="CarFullDetail.Description" class="control-label"></label>
                 <textarea asp-for="CarFullDetail.Description" class="form-control" rows="6"></textarea>

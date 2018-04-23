@@ -41,6 +41,13 @@ namespace CarRent.Controllers
                 var cars = data.GetCars();
                 foreach (var c in cars)
                 {
+                    if (c.Image == null)
+                    {
+                        c.Image = new DAL.Models.CarRentModels.ImageModel()
+                        {
+                            Path = "http://via.placeholder.com/150x100"
+                        };
+                    }
                     model.Cars.Add(c);
                 }
                 return View("../User/Cars", model);
@@ -48,8 +55,9 @@ namespace CarRent.Controllers
         }
 
         // GET: Car/Details/5
-        public async Task<ActionResult> Details(int id)
+        public ActionResult Details(int id)
         {
+            // Elvileg nem lehet admin hívás
             if (User.IsInRole("ADMIN"))
             {
                 model = new CarViewModel();
@@ -58,25 +66,31 @@ namespace CarRent.Controllers
                 if (car == null)
                     return NotFound();
                 model.CarFullDetail = car;
-                var images = new List<FileStreamResult>();
-                foreach(var img in car.Images)
-                {
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", model.CarFullDetail.NumberPlate, img.Path);
-                    var memory = new MemoryStream();
-                    using(var stream = new FileStream(path, FileMode.Open))
-                    {
-                        await stream.CopyToAsync(memory);
-                    }
-                    // TODO - file type
-                    var file = File(memory,"", Path.GetFileName(path));
-                    images.Add(file);
-                }
+                //var images = new List<FileStreamResult>();
+                //foreach(var img in car.Images)
+                //{
+                //    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", model.CarFullDetail.NumberPlate, img.Path);
+                //    var memory = new MemoryStream();
+                //    using(var stream = new FileStream(path, FileMode.Open))
+                //    {
+                //        await stream.CopyToAsync(memory);
+                //    }
+                //    // TODO - file type
+                //    var file = File(memory,"", Path.GetFileName(path));
+                //    images.Add(file);
+                //}
                 return View("../Admin/CarDetail", model);
             }
             else
             {
-                // TODO - user car detail view
-                return View("Home/Index");
+                model = new CarViewModel();
+                var car = data.GetCar(id);
+
+                if (car == null)
+                    return NotFound();
+                model.CarFullDetail = car;
+
+                return View("../User/CarDetail", model);
             }
         }
 
@@ -242,6 +256,7 @@ namespace CarRent.Controllers
                     System.IO.File.Delete(filePath);
                 }
             }
+
             var directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", car.NumberPlate);
             if (Directory.Exists(directoryPath))
             {

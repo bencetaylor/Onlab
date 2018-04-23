@@ -54,3 +54,23 @@
     left: 50px;
     font-size: 2vw;
 }
+
+.homeBtn {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.homeBrand {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    font-size: 0.875vw;
+}
+
+.homePrice {
+    position: absolute;
+    top: 50px;
+    left: 40px;
+    font-size: 0.75vw;
+}

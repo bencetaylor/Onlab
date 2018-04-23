@@ -74,25 +74,16 @@
                                 @if (Model.CarFullDetail.Images.FirstOrDefault().ImageID == img.ImageID)
                                 {
                                     <div class="carousel-item active mx-auto">
-                                        <img src="~/images/@img.Path" width="400" height="300">
+                                        <img src="~/images/@Model.CarFullDetail.NumberPlate/@img.Path" width="400" height="300">
                                     </div>
                                 }
                                 else
                                 {
                                     <div class="carousel-item mx-auto">
-                                        <img src="~/images/@img.Path" width="400" height="300">
+                                        <img src="~/images/@Model.CarFullDetail.NumberPlate/@img.Path" width="400" height="300">
                                     </div>
                                 }
                             }
-                            <div class="carousel-item">
-                                <img src="http://via.placeholder.com/400x300" alt="New York" width="400" height="300">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="http://via.placeholder.com/400x300" alt="Los Angeles" width="400" height="300">
-                            </div>
-                            <div class="carousel-item">
-                                <img src="http://via.placeholder.com/400x300" alt="Chicago" width="400" height="300">
-                            </div>
                         </div>
 
                         <!-- Left and right controls -->

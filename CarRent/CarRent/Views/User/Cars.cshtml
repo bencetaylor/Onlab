@@ -12,18 +12,14 @@
         @foreach (var car in Model.Cars)
         {
             <div class="col">
-                <div class="card" style="margin: 20px">
-                    <div class="card-body">
-                        <div class="row">
-                            <a asp-area="" asp-controller="Home" asp-action="CarDetails" asp-route-id="@car.CarID" class="btn">
-                                <img src="http://via.placeholder.com/150x100" width="150" height="100" />
-                                @*<img src="~/images/@car.Image.Path" width="150" height="100" />*@
-                            </a>
-                        </div>
-                        <div class="row">@car.Brand</div>
-                        <div class="row">@car.Price Ft/day</div>
-                    </div>
+                <div class="row">
+                    <a asp-area="" asp-controller="Car" asp-action="Details" asp-route-id="@car.CarID" class="btn" style="width: 100%; height: 100%; position: relative;">
+                        <img src="http://via.placeholder.com/150x100" width="150" height="100" />
+                        @*<img src="~/images/@car.NumberPlate/@car.Image.Path" width="150" height="100" />*@
+                    </a>
                 </div>
+                <div class="row">@car.Brand</div>
+                <div class="row">@car.Price Ft/day</div>
             </div>
         }
     </div>

@@ -50,21 +50,23 @@
             <h6>Images</h6>
             <div id="mycarousel" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
-                @*<ul class="carousel-indicators">
-                    <li data-target="#mycarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#mycarousel" data-slide-to="1"></li>
-                    <li data-target="#mycarousel" data-slide-to="2"></li>
-                </ul>*@
 
                 <!-- The slideshow -->
-                <div class="carousel-inner">
-                    @foreach (var img in Model.CarFullDetail.Images)
+                @foreach (var img in Model.CarFullDetail.Images)
+                {
+                    @if (Model.CarFullDetail.Images.FirstOrDefault().ImageID == img.ImageID)
                     {
-                        <div class="carousel-item active">
-                            <img src="~/images/@img.Path" width="400" height="300">
+                        <div class="carousel-item active mx-auto">
+                            <img src="~/images/@Model.CarFullDetail.NumberPlate/@img.Path" width="400" height="300">
                         </div>
                     }
-                </div>
+                    else
+                    {
+                        <div class="carousel-item mx-auto">
+                            <img src="~/images/@Model.CarFullDetail.NumberPlate/@img.Path" width="400" height="300">
+                        </div>
+                    }
+                }
 
                 <!-- Left and right controls -->
                 <a class="carousel-control-prev" href="#mycarousel" data-slide="prev">
@@ -75,6 +77,10 @@
                 </a>
             </div>
 
+            <h6>Location Map</h6>
+            <div class="row">
+                <img src="http://via.placeholder.com/400x400" />
+            </div>
         </div>
     </div>
     <div class="row">

@@ -57,7 +57,7 @@ namespace CarRent.DAL.Models
                     Brand = c.Brand ?? "none",
                     Location = c.Site.Address,
                     NumberPlate = c.NumberPlate,
-                    //Image = c.Images.First()
+                    Image = c.Images.FirstOrDefault()
                 }).Take(5)
                 .ToList();
 

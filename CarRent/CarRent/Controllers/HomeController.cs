@@ -27,9 +27,25 @@ namespace CarRent.Controllers
             model = new HomeViewModel();
             var cars = data.GetTopCars();
             model.mainCar = cars.First();
-            cars.RemoveAt(0);
-            foreach(var c in cars)
+            if(model.mainCar.Image == null)
             {
+                model.mainCar.Image = new DAL.Models.CarRentModels.ImageModel()
+                {
+                    Path = "http://via.placeholder.com/800x530"
+                };
+            }
+
+            cars.RemoveAt(0);
+
+            foreach (var c in cars)
+            {
+                if (c.Image == null)
+                {
+                    c.Image = new DAL.Models.CarRentModels.ImageModel()
+                    {
+                        Path = "http://via.placeholder.com/150x100"
+                    };
+                }
                 model.cars.Add(c);
             }
 
