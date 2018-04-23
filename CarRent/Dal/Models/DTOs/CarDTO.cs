@@ -10,7 +10,7 @@ namespace CarRent.DAL.Models.DTOs
     {
         public int CarID { get; set; }
         public int Price { get; set; }
-        public CarTypes.Types Type { get; set; }
+        public EnumTypes.CarType Type { get; set; }
         public String Brand { get; set; }
         public String Location { get; set; }
         public String NumberPlate { get; set; }

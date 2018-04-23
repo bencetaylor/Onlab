@@ -16,7 +16,7 @@ namespace CarRent.DAL.Models.DTOs
         public CarModel Car { get; set; }
         public SiteModel Site { get; set; }
 
-        public RentState State { get; set; }
-        public InsuranceType Insurance { get; set; }
+        public EnumTypes.RentState State { get; set; }
+        public EnumTypes.InsuranceType Insurance { get; set; }
     }
 }

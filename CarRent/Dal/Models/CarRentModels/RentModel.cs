@@ -4,9 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarRent.DAL.Models.CarRentModels
 {
-    public enum InsuranceType { Basic = 1, Gold=2, Platinum=3 }
-    public enum RentState { Approved = 1, Dismissed=2, Pending=3 }
-
     public class RentModel
     {
         [Key]
@@ -20,8 +17,8 @@ namespace CarRent.DAL.Models.CarRentModels
         public CarModel Car { get; set; }
         public SiteModel Site { get; set; }
 
-        public RentState State { get; set; }
-        public InsuranceType Insurance { get; set; }
+        public EnumTypes.RentState State { get; set; }
+        public EnumTypes.InsuranceType Insurance { get; set; }
 
         public RentModel()
         {

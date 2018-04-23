@@ -12,6 +12,7 @@ namespace CarRent.Models.DataViewModels
         public List<RentDTO> Rents;
         [BindProperty]
         public RentDetailsDTO RentDetails { get; set; }
+        public List<String> Insurance;
 
         public RentViewModel()
         {

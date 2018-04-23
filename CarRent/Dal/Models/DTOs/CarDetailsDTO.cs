@@ -9,7 +9,7 @@ namespace CarRent.DAL.Models.DTOs
     {
         public int CarID { get; set; }
         public String NumberPlate { get; set; }
-        public CarTypes.Types Type { get; set; }
+        public EnumTypes.CarType Type { get; set; }
         public String Brand { get; set; }
         public int Price { get; set; }
         public int Doors { get; set; }
@@ -19,7 +19,7 @@ namespace CarRent.DAL.Models.DTOs
         public int Power { get; set; }
         public String Description { get; set; }
 
-        public CarState State { get; set; }
+        public EnumTypes.CarState State { get; set; }
 
         public SiteModel Location { get; set; }
         public ICollection<ImageModel> Images { get; set; }

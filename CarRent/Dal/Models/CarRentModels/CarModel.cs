@@ -5,8 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CarRent.DAL.Models.CarRentModels
 {
-    public enum CarState { Rented = 1, Available=2, InService=3 };
-
     public class CarModel
     {
         [Key]
@@ -18,7 +16,7 @@ namespace CarRent.DAL.Models.CarRentModels
         public ICollection<CommentModel> Comments { get; set; }
 
         public String NumberPlate { get; set; }
-        public CarTypes.Types Type { get; set; }
+        public EnumTypes.CarType Type { get; set; }
         public String Brand { get; set; }
         public int Price { get; set; }
         public int Doors { get; set; }
@@ -27,7 +25,7 @@ namespace CarRent.DAL.Models.CarRentModels
         public int Trunk { get; set; }
         public int Power { get; set; }
         public String Description { get; set; }
-        public CarState State { get; set; }
+        public EnumTypes.CarState State { get; set; }
 
         public CarModel()
         {

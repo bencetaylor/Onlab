@@ -16,7 +16,6 @@ namespace CarRent.Controllers
         private readonly DataController data;
         private CarViewModel model;
 
-        // TODO context only in DAL project
         public CarController()
         {
             data = new DataController();

@@ -4,8 +4,8 @@ using System.Text;
 
 namespace CarRent.DAL.Models.CarRentModels
 {
-    public class CarTypes
+    public class Types
     {
-        public enum Types { Sedan, Hatchback, SUV, Crossover, Pickup }
+        public enum CarType { Sedan, Hatchback, SUV, Crossover, Pickup }
     }
 }

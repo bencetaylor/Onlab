@@ -259,7 +259,8 @@ namespace CarRent.DAL.Models
                     RentID = r.RentID,
                     Car = r.Car,
                     RentStarts = r.RentStarts,
-                    RentEnds = r.RentEnds
+                    RentEnds = r.RentEnds,
+                    State = r.State
                 }).ToList();
             return rents;
         }
@@ -312,6 +313,7 @@ namespace CarRent.DAL.Models
 
         public Boolean CreateRent(RentDetailsDTO _rent)
         {
+
             var rent = new CarRentModels.RentModel()
             {
                 RentID = _rent.RentID,
@@ -322,7 +324,7 @@ namespace CarRent.DAL.Models
                 RentEnds = _rent.RentEnds,
                 Price = _rent.Price,
                 Insurance = _rent.Insurance,
-                State = _rent.State
+                State = EnumTypes.RentState.Pending
             };
             context.Rents.Add(rent);
             context.SaveChanges();
@@ -336,6 +338,33 @@ namespace CarRent.DAL.Models
             var rent = context.Rents.Find(id);
 
             context.Rents.Remove(rent);
+            context.SaveChanges();
+        }
+
+        public void PendingRent(int id)
+        {
+            var rent = context.Rents.Find(id);
+            rent.State = EnumTypes.RentState.Pending;
+
+            context.Rents.Update(rent);
+            context.SaveChanges();
+        }
+
+        public void ApproveRent(int id)
+        {
+            var rent = context.Rents.Find(id);
+            rent.State = EnumTypes.RentState.Approved;
+
+            context.Rents.Update(rent);
+            context.SaveChanges();
+        }
+
+        public void DismissRent(int id)
+        {
+            var rent = context.Rents.Find(id);
+            rent.State = EnumTypes.RentState.Dismissed;
+
+            context.Rents.Update(rent);
             context.SaveChanges();
         }
 
@@ -392,27 +421,14 @@ namespace CarRent.DAL.Models
             context.SaveChanges();
         }
 
-        public void SaveImages(List<ImageDTO> images, int CarID)
-        {
-            var car = context.Cars.Find(CarID);
-            foreach (var img in images)
-            {
-                var image = new ImageModel()
-                {
-                    Car = img.Car,
-                    Name = img.Name,
-                    Path = img.Path
-                };
-                context.Images.Add(image);
-                car.Images.Add(image);
-            }
-            context.Cars.Update(car);
-            context.SaveChanges();
-        }
-
         public List<String> GetCarTypes()
         {
-            return Enum.GetNames(typeof(CarTypes.Types)).ToList();
+            return Enum.GetNames(typeof(EnumTypes.CarType)).ToList();
+        }
+
+        public List<String> GetInsurence()
+        {
+            return Enum.GetNames(typeof(EnumTypes.InsuranceType)).ToList();
         }
     }
 }

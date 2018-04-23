@@ -20,6 +20,9 @@
                 <th>
                     Ends
                 </th>
+                <th>
+                    State
+                </th>
                 <th></th>
             </tr>
         </thead>
@@ -37,14 +40,37 @@
                         @Html.DisplayFor(modelItem => item.RentEnds.Date)
                     </td>
                     <td>
+                        @Html.DisplayFor(modelItem => item.State)
+                    </td>
+                    <td>
                         <a asp-area="" asp-controller="Rent" asp-action="Edit" asp-route-id="@item.RentID" class="btn btn-outline-dark btn-sm">Edit</a> |
                         <a asp-area="" asp-controller="Rent" asp-action="Details" asp-route-id="@item.RentID" class="btn btn-outline-dark btn-sm">Details</a> |
-                        @*<a asp-area="" asp-controller="Rent" asp-action="Delete" asp-route-id="@item.RentID" class="btn btn-danger btn-sm">Delete</a>*@
-                        <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#@item.RentID">
+                       
+                        <button type="button" class="btn btn-outline-dark btn-sm" data-toggle="modal" data-target="#@item.RentID+state">
+                            ChangeState
+                        </button>
+                        <!-- The Modal -->
+                        <div class="modal fade" id="@item.RentID+state">
+                            <div class="modal-dialog modal-sm modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Change rent state</h4>
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <a asp-area="" asp-controller="Rent" asp-action="Pending" asp-route-id="@item.RentID" class="btn btn-dark btn-sm">Pending</a>
+                                        <a asp-area="" asp-controller="Rent" asp-action="Approve" asp-route-id="@item.RentID" class="btn btn-dark btn-sm">Approve</a>
+                                        <a asp-area="" asp-controller="Rent" asp-action="Dismiss" asp-route-id="@item.RentID" class="btn btn-dark btn-sm">Dismiss</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        |
+                        <button type="button" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#@item.RentID+delete">
                             Delete
                         </button>
                         <!-- The Modal -->
-                        <div class="modal fade" id="@item.RentID">
+                        <div class="modal fade" id="@item.RentID+delete">
                             <div class="modal-dialog modal-sm modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">

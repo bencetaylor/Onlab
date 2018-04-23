@@ -54,7 +54,7 @@
                 <div>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a asp-area="" asp-controller="Rent" asp-action="Create" class="btn btn-outline-primary btn-block">Rent</a>
+                        <a asp-area="" asp-controller="Rent" asp-action="Create" asp-route-id="@Model.CarFullDetail.CarID" class="btn btn-outline-primary btn-block">Rent</a>
                     }
                     else
                     {

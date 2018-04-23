@@ -15,12 +15,12 @@
                         <a asp-area="" asp-controller="Home" asp-action="CarDetails" asp-route-id="@Model.mainCar.CarID" class="btn" id="homeMainBtn">
                             <img src="http://via.placeholder.com/800x530" width="1200" height="800"/>
                             @*<img src="~/images/@Model.mainCar.Image.Path" width="800" height="530" />*@
-                            <div id="homeMainBrand">@Model.mainCar.Brand</div>
-                            <div id="homeMainPrice">@Model.mainCar.Price Ft/day</div>
+                            @*<div id="homeMainBrand">@Model.mainCar.Brand</div>
+                            <div id="homeMainPrice">@Model.mainCar.Price Ft/day</div>*@
                         </a>
                     </div>
-                    @*<div id="homeMainBrand" class="row">@Model.mainCar.Brand</div>
-                    <div id="homeMainPrice" class="row">@Model.mainCar.Price Ft/day</div>*@
+                    <div id="homeMainBrand" class="row">@Model.mainCar.Brand</div>
+                    <div id="homeMainPrice" class="row">@Model.mainCar.Price Ft/day</div>
                 </div>
             </div>
         </div>
