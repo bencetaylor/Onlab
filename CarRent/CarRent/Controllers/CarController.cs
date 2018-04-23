@@ -235,12 +235,17 @@ namespace CarRent.Controllers
 
             foreach (var img in car.Images)
             {
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", img.Path);
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", car.NumberPlate, img.Path);
 
                 if (System.IO.File.Exists(filePath))
                 {
                     System.IO.File.Delete(filePath);
                 }
+            }
+            var directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", car.NumberPlate);
+            if (Directory.Exists(directoryPath))
+            {
+                Directory.Delete(directoryPath);
             }
 
             data.DeleteCar(id);
