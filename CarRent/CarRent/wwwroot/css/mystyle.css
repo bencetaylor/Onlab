@@ -9,9 +9,9 @@
 }
 
 .carousel-inner {
-    /*display: flex;
-    align-items: center;*/
-    /*background-color: black;*/
+    height: 100%;
+    display: flex;
+    align-items: center;
 }
 
 .card {
@@ -23,10 +23,19 @@
     margin-bottom: 50px;
 }
 
+.info {
+    padding: 10px;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    height: 100px;
+    width: 100%;
+    background: rgba(170, 170, 170, 0.7);
+}
+
 #mycarousel {
     width: 400px;
     height: 300px;
-    background-color: black;
 }
 
 .row img {
@@ -36,41 +45,40 @@
 }
 
 #homeMainBtn {
+    padding: 0px;
     width: 100%;
     height: 100%;
     position: relative;
-}
-
-#homeMainBrand {
-    position: absolute;
-    bottom: 100px;
-    left: 50px;
-    font-size: 2.5vw;
-}
-
-#homeMainPrice {
-    position: absolute;
-    bottom: 50px;
-    left: 50px;
-    font-size: 2vw;
 }
 
 .homeBtn {
+    padding: 0px;
     width: 100%;
     height: 100%;
     position: relative;
 }
 
-.homeBrand {
-    position: absolute;
-    top: 30px;
-    left: 40px;
-    font-size: 0.875vw;
+.img-wrap {
+    position:relative;
+    margin-bottom: 10px;
 }
 
-.homePrice {
+.img-wrap .delete {
+    font-size: 2em;
+    font-weight: bold;
+    color: white;
+    position: inherit;
+    right: 10px;
+    z-index: 100;
+}
+
+.deleteBtn {
+    padding: 10px;
     position: absolute;
-    top: 50px;
-    left: 40px;
-    font-size: 0.75vw;
+    text-align: center;
+    top: 0px;
+    left: 0px;
+    height: 80px;
+    width: 100%;
+    background: rgba(170, 170, 170, 0.7);
 }

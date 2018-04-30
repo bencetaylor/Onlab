@@ -186,7 +186,7 @@ namespace CarRent.Controllers
                     data.CreateRent(model.RentDetails);
                     return RedirectToAction("Index");
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("../Home/Index");
             }
             catch
             {

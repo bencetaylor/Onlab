@@ -9,28 +9,33 @@
     
     <div class="row">
         <div class="col-12 align-content-center">
-                    <div class="row">
-                        <a asp-area="" asp-controller="Home" asp-action="CarDetails" asp-route-id="@Model.mainCar.CarID" class="btn" id="homeMainBtn">
-                            <img src="http://via.placeholder.com/800x530" width="1200" height="800"/>
-                            @*<img src="~/images/@Model.mainCar.NumberPlate/@Model.mainCar.Image.Path" width="1200" height="800" />*@
-                        </a>
-                    </div>
-                    <div id="homeMainBrand" class="row">@Model.mainCar.Brand</div>
-                    <div id="homeMainPrice" class="row">@Model.mainCar.Price Ft/day</div>
+            <div class="row">
+                <a asp-area="" asp-controller="Home" asp-action="CarDetails" asp-route-id="@Model.mainCar.CarID" class="btn" id="homeMainBtn">
+                @*<img src="http://via.placeholder.com/800x530" width="1200" height="800"/>*@
+                    <img src="~/images/@Model.mainCar.NumberPlate/@Model.mainCar.Image.Path" width="1200" height="800" />
+                </a>
+                <div class="info">
+                    <h3 style="color: aliceblue;">@Model.mainCar.Brand</h3>
+                    <h4 style="color: aliceblue;">@Model.mainCar.Price Ft/day</h4>
+                </div>
+            </div>
+            
         </div>
     </div>
     <div class="row">
         @foreach (var car in Model.cars)
         {
-            <div class="col">
+            <div class="col" style="margin:10px;">
                 <div class="row">
-                    <a asp-area="" asp-controller="Home" asp-action="CarDetails" asp-route-id="@car.CarID" class="btn" style="width: 100%; height: 100%; position: relative;">
+                    <a asp-area="" asp-controller="Home" asp-action="CarDetails" asp-route-id="@car.CarID" style="width: 100%; height: 100%; position: relative;">
                         @*<img src="http://via.placeholder.com/150x100" width="150" height="100" />*@
                         <img src="~/images/@car.NumberPlate/@car.Image.Path" width="150" height="100" />
                     </a>
+                    <div class="info">
+                        <h6 style="color: aliceblue;">@car.Brand</h6>
+                        <h6 style="color: aliceblue;">@car.Price Ft/day</h6>
+                    </div>
                 </div>
-                <div class="row homeBrand">@car.Brand</div>
-                <div class="row homePrice">@car.Price Ft/day</div>
             </div>
         }
     </div>

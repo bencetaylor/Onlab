@@ -38,7 +38,7 @@ namespace CarRent.DAL.Models
                     Brand = c.Brand ?? "none",
                     Location = c.Site.Address,
                     NumberPlate = c.NumberPlate,
-                    //Image = c.Images.First()
+                    Image = c.Images.FirstOrDefault()
                 }).ToList();
             
             return cars;
@@ -144,7 +144,7 @@ namespace CarRent.DAL.Models
                     Description = c.Description,
                     Images = c.Images,
                     //Comments = c.Comments
-                }).First();
+                }).FirstOrDefault();
             return car;
         }
 
@@ -196,29 +196,46 @@ namespace CarRent.DAL.Models
 
             CarModel carModel;
 
-            //if()
-            //{
-            //    carModel = 
-            //}
-
-            carModel = new CarModel()
+            if (context.Cars.Any(car => car.CarID == c.CarID))
             {
-                Brand = c.Brand,
-                CarID = c.CarID,
-                //Comments = c.Comments,
-                Consuption = c.Consuption,
-                Description = c.Description,
-                Doors = c.Doors,
+                carModel = context.Cars.Find(c.CarID);
+                carModel.Brand = c.Brand;
+                carModel.CarID = c.CarID;
+                //Comments = c.Comments;
+                carModel.Consuption = c.Consuption;
+                carModel.Description = c.Description;
+                carModel.Doors = c.Doors;
                 // TODO Location not working 
-                Site = c.Location,
-                NumberPlate = c.NumberPlate,
-                Passangers = c.Passangers,
-                Power = c.Power,
-                Price = c.Price,
-                State = c.State,
-                Trunk = c.Trunk,
-                Type = c.Type
-            };
+                carModel.Site = c.Location;
+                carModel.NumberPlate = c.NumberPlate;
+                carModel.Passangers = c.Passangers;
+                carModel.Power = c.Power;
+                carModel.Price = c.Price;
+                carModel.State = c.State;
+                carModel.Trunk = c.Trunk;
+                carModel.Type = c.Type;
+            }
+            else
+            {
+                carModel = new CarModel()
+                {
+                    Brand = c.Brand,
+                    CarID = c.CarID,
+                    //Comments = c.Comments,
+                    Consuption = c.Consuption,
+                    Description = c.Description,
+                    Doors = c.Doors,
+                    // TODO Location not working 
+                    Site = c.Location,
+                    NumberPlate = c.NumberPlate,
+                    Passangers = c.Passangers,
+                    Power = c.Power,
+                    Price = c.Price,
+                    State = c.State,
+                    Trunk = c.Trunk,
+                    Type = c.Type
+                };
+            }
 
             if(images != null)
             {
@@ -246,6 +263,29 @@ namespace CarRent.DAL.Models
             site.Cars.Add(carModel);
             context.Sites.Update(site);
 
+            context.SaveChanges();
+        }
+
+        public ImageDTO GetImage(int id)
+        {
+            var img = context.Images
+                .Include(i => i.Car)
+                .Where(i => i.ImageID == id)
+                .Select(i => new ImageDTO()
+                {
+                    ImageID = i.ImageID,
+                    Car = i.Car,
+                    Name = i.Name,
+                    Path = i.Path
+                }).FirstOrDefault();
+            
+            return img;
+        }
+
+        public void DeleteImage(int id)
+        {
+            var img = context.Images.Find(id);
+            context.Images.Remove(img);
             context.SaveChanges();
         }
 

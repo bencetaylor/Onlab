@@ -199,7 +199,6 @@ namespace CarRent.Controllers
                 var errorModel = new ErrorViewModel();
                 return View("../Shared/Error", errorModel);
             }
-
             try
             {
                 if (ModelState.IsValid)
@@ -210,7 +209,13 @@ namespace CarRent.Controllers
 
                     foreach (var formFile in images)
                     {
-                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", formFile.FileName);
+                        var directoryPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", model.CarFullDetail.NumberPlate);
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", model.CarFullDetail.NumberPlate, formFile.FileName);
+
+                        if (!Directory.Exists(directoryPath))
+                        {
+                            Directory.CreateDirectory(directoryPath);
+                        }
 
                         using (var stream = new FileStream(filePath, FileMode.Create))
                         {
@@ -264,6 +269,28 @@ namespace CarRent.Controllers
             }
 
             data.DeleteCar(id);
+            return RedirectToAction("Index");
+        }
+
+        // Post: DeleteImage/5
+        public ActionResult DeleteImage(int id)
+        {
+            if (!User.IsInRole("ADMIN"))
+            {
+                var errorModel = new ErrorViewModel();
+                return View("../Shared/Error", errorModel);
+            }
+            var img = data.GetImage(id);
+
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", img.Car.NumberPlate, img.Path);
+
+            if (System.IO.File.Exists(filePath))
+            {
+                System.IO.File.Delete(filePath);
+            }
+            data.DeleteImage(id);
+
+            //return Redirect(DeleteImage.UrlReferrer.ToString());
             return RedirectToAction("Index");
         }
     }

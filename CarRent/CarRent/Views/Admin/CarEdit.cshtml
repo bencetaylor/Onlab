@@ -11,7 +11,7 @@
 <hr />
 
 <div class="container">
-    <form asp-action="Edit">
+    <form asp-action="Edit" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input type="hidden" asp-for="CarFullDetail.CarID" />
         <div class="row">
@@ -78,11 +78,23 @@
                     <textarea asp-for="CarFullDetail.Description" class="form-control" rows="6"></textarea>
                     <span asp-validation-for="CarFullDetail.Description" class="text-danger"></span>
                 </div>
+
                 <div class="form-group row">
-                    <label asp-for="CarFullDetail.Images" class="control-label"></label>
-                    <input type="file" name="images" class="form-control" multiple />
-                    @*<input asp-for="CarFullDetail.Images" type="file" name="images" class="form-control" />
-                    <span asp-validation-for="CarFullDetail.Images" class="text-danger"></span>*@
+                    <div class="col">
+                        <div class="row">
+                            <label asp-for="CarFullDetail.Images" class="control-label"></label>
+                            @foreach (var img in Model.CarFullDetail.Images)
+                            {
+                                <div class="img-wrap">
+                                    <div class="deleteBtn">
+                                        <a asp-area="" asp-controller="Car" asp-action="DeleteImage" asp-route-id="@img.ImageID" class="delete">&times;</a>
+                                    </div>
+                                    <img src="~/images/@Model.CarFullDetail.NumberPlate/@img.Path" width="400" height="300">
+                                </div>
+                            }
+                            <input type="file" name="images" class="form-control" multiple />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -92,8 +104,20 @@
     </form>        
 </div>
 
-
 <div>
     <a asp-action="Index" class="btn btn-outline-dark btn-sm">Back to List</a>
 </div>
+
+@*<script type="text/javascript">
+    function DeleteImage(id) {
+        $.ajax({
+            type: "POST",
+            url: "",
+            data: id,
+            success: function (data) {
+                $("#summary")
+            }
+        });
+    }
+</script>*@
 
