@@ -27,7 +27,7 @@ namespace CarRent.Controllers
         // GET: Rent
         public ActionResult Index()
         {
-            if (User.IsInRole("Admin"))
+            if (User.IsInRole("ADMIN"))
             {
                 model = new RentViewModel();
                 model.Rents = data.GetRents();

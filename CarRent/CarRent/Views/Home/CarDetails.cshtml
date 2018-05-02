@@ -20,7 +20,7 @@
     <div class="container">
         <h5 class="row">Details</h5>
         <div class="row">
-            <div class="col-6">
+            <div class="col-6 car-detail">
                 <table class="w-100 table">
                     <tr>
                         <th>Brand:</th>
@@ -62,8 +62,8 @@
                     }
                 </div>
             </div>
-
-            <div class="col-6">
+            
+            <div class="col-6 car-detail">
                 <h6>Images</h6>
                 <div class="row">
                     <div id="mycarousel" class="carousel slide" data-ride="carousel">
@@ -98,7 +98,7 @@
 
                 <h6>Location Map</h6>
                 <div class="row">
-                    <img src="http://via.placeholder.com/400x400" />
+                    @await Html.PartialAsync("../User/Maps")
                 </div>
             </div>
         </div>

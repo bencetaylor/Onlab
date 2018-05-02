@@ -7,13 +7,46 @@
 
 <h2>RentDetail</h2>
 
-<div>
-    <h4>RentViewModel</h4>
-    <hr />
-    <dl class="dl-horizontal">
-    </dl>
+<div class="container">
+    <h5 class="row">Rent Details</h5>
+    <div class="row">
+        <div class="col-12">
+            <table class="w-100 table">
+                <tr>
+                    <th>Car:</th>
+                    <td>@Model.RentDetails.Car.Brand</td>
+                </tr>
+                <tr>
+                    <th>Address:</th>
+                    <td>@Model.RentDetails.Site.Address</td>
+                </tr>
+                <tr>
+                    <th>Insuracne:</th>
+                    <td>@Model.RentDetails.Insurance</td>
+                </tr>
+                <tr>
+                    <th>Starts</th>
+                    <td>@Model.RentDetails.RentStarts</td>
+                </tr>
+                <tr>
+                    <th>Ends</th>
+                    <td>@Model.RentDetails.RentEnds</td>
+                </tr>
+                <tr>
+                    <th>Price</th>
+                    <td>@Model.RentDetails.Price</td>
+                </tr>
+                <tr>
+                    <th>State</th>
+                    <td>@Model.RentDetails.State</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <a asp-area="" asp-controller="Rent" asp-action="Edit" asp-route-id="@Model.RentDetails.RentID" class="btn btn-outline-dark btn-sm">Edit</a>
+    </div>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     <a asp-action="Index" class="btn btn-outline-dark btn-sm">Back to List</a>
 </div>
