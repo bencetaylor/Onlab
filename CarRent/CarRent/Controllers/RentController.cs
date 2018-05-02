@@ -27,9 +27,20 @@ namespace CarRent.Controllers
         // GET: Rent
         public ActionResult Index()
         {
-            model = new RentViewModel();
-            model.Rents = data.GetRents();
-            return View("../Admin/Rents", model);
+            if (User.IsInRole("Admin"))
+            {
+                model = new RentViewModel();
+                model.Rents = data.GetRents();
+                return View("../Admin/Rents", model);
+            }
+            else
+            {
+                model = new RentViewModel();
+                var user = userManager.FindByNameAsync(User.Identity.Name).Result;
+                model.Rents = data.GetRentsForUser(user);
+                return View("../User/Rents", model);
+            }
+            
         }
 
         // GET: Rent/Details/5
@@ -64,27 +75,21 @@ namespace CarRent.Controllers
             {
                 return View("../Account/Login");
             }
-            //if (!User.IsInRole("ADMIN"))
-            //{
-            //    var errorModel = new ErrorViewModel();
-            //    return View("../Shared/Error", errorModel);
-            //}
+            if (!User.IsInRole("ADMIN"))
+            {
+                var errorModel = new ErrorViewModel();
+                return View("../Shared/Error", errorModel);
+            }
             model = new RentViewModel();
             model.Insurance = data.GetInsurence();
             model.RentDetails.Car = data.FindCar(carID);
             
             return View("../User/RentCreate", model);
         }
-
-        public ActionResult PreviewRent(RentViewModel model)
-        {
-            return View("../User/RentPreview", model);
-        }
-
         // POST: Rent/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(RentViewModel model)
+        public ActionResult Create(RentViewModel model, int CarID)
         {
             if (User.IsInRole("ADMIN"))
             {
@@ -130,24 +135,36 @@ namespace CarRent.Controllers
                         model.RentDetails.Car = car;
 
                         model.RentDetails.Price = Convert.ToInt32((model.RentDetails.RentEnds - model.RentDetails.RentStarts).TotalDays) * car.Price;
-                        
+                        model.RentDetails.Site = data.GetSiteByID(1);
+
                         data.CreateRent(model.RentDetails);
-                        return RedirectToAction("Index");
+
+                        return RedirectToAction("PreviewRent", "RentController", 1);
                     }
-                    return RedirectToAction(nameof(Index));
+                    //return RedirectToAction(nameof(Index));
+                    var errorModel = new ErrorViewModel();
+                    return View("../Shared/Error", errorModel);
                 }
                 catch
                 {
-                    return View();
+                    var errorModel = new ErrorViewModel();
+                    return View("../Shared/Error", errorModel);
                 }
             }
+        }
 
-            //else
-            //{
-            //    var errorModel = new ErrorViewModel();
-            //    return View("../Shared/Error", errorModel);
-            //}
-            
+        public ActionResult PreviewRent(int RentID)
+        {
+            model.RentDetails = data.GetRent(RentID);
+
+            return View("../User/RentPreview", model);
+        }
+        
+        public ActionResult FinishRent(int RentID)
+        {
+            data.FinishRent(RentID);
+
+            return RedirectToAction("Index");
         }
 
         // GET: Rent/Edit/5
@@ -165,6 +182,8 @@ namespace CarRent.Controllers
             if (rent == null)
                 return NotFound();
             model.RentDetails = rent;
+            model.Insurance = data.GetInsurence();
+
             return View("../Admin/RentEdit", model);
         }
 
@@ -178,7 +197,6 @@ namespace CarRent.Controllers
                 var errorModel = new ErrorViewModel();
                 return View("../Shared/Error", errorModel);
             }
-
             try
             {
                 if (ModelState.IsValid)

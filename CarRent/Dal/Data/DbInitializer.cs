@@ -110,7 +110,7 @@ namespace CarRent.DAL.Data
             // Creating rents
             var rents = new RentModel[]
             {
-                new RentModel{Car=cars[0],User=user,Site=site1,RentStarts=new System.DateTime(2018,3,15),RentEnds=new System.DateTime(2018,3,20),State=EnumTypes.RentState.Pending}
+                new RentModel{Car=cars[0],User=user,Site=site1,RentStarts=new System.DateTime(2018,3,15),RentEnds=new System.DateTime(2018,3,20),State=EnumTypes.RentState.Pending, Finished=true}
             };
 
             foreach (RentModel r in rents)

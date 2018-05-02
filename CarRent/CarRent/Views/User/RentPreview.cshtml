@@ -1,11 +1,11 @@
 ﻿@model CarRent.Models.DataViewModels.RentViewModel
 
 @{
-    ViewData["Title"] = "RentDetail";
+    ViewData["Title"] = "RentPreview";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>RentDetail</h2>
+<h2>RentPreview</h2>
 
 <div class="container">
     <h5 class="row">Rent Details</h5>
@@ -36,12 +36,11 @@
                     <th>Price</th>
                     <td>@Model.RentDetails.Price</td>
                 </tr>
-                <tr>
-                    <th>State</th>
-                    <td>@Model.RentDetails.State</td>
-                </tr>
             </table>
         </div>
+    </div>
+    <div class="row">
+        <a asp-controller="Rent" asp-action="FinishRent" asp-route="@Model.RentDetails.RentID" class="btn btn-primary btn-block">Confirm</a>
     </div>
 </div>
 <div>

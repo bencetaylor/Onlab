@@ -294,13 +294,32 @@ namespace CarRent.DAL.Models
         {
             var rents = context.Rents
                 .Include(r => r.Car)
+                .Where(r => r.Finished)
                 .Select(r => new RentDTO()
                 {
                     RentID = r.RentID,
                     Car = r.Car,
                     RentStarts = r.RentStarts,
                     RentEnds = r.RentEnds,
-                    State = r.State
+                    State = r.State,
+                    Finished = r.Finished
+                }).ToList();
+            return rents;
+        }
+
+        public List<RentDTO> GetRentsForUser(ApplicationUser user)
+        {
+            var rents = context.Rents
+                .Include(r => r.Car)
+                .Where(r => r.Finished && r.User.Id == user.Id)
+                .Select(r => new RentDTO()
+                {
+                    RentID = r.RentID,
+                    Car = r.Car,
+                    RentStarts = r.RentStarts,
+                    RentEnds = r.RentEnds,
+                    State = r.State,
+                    Finished = r.Finished
                 }).ToList();
             return rents;
         }
@@ -311,6 +330,7 @@ namespace CarRent.DAL.Models
                 .Include( r => r.Car )
                 .Include( r => r.Site )
                 .Include( r => r.User )
+                .Where( r => r.Finished)
                 .Select( r => new RentDetailsDTO()
                 {
                     RentID = r.RentID,
@@ -321,8 +341,8 @@ namespace CarRent.DAL.Models
                     RentEnds = r.RentEnds,
                     Price = r.Price,
                     Insurance = r.Insurance,
-                    State = r.State
-                    
+                    State = r.State, 
+                    Finished = r.Finished
                 }).ToList();
             return rents;
         }
@@ -344,14 +364,14 @@ namespace CarRent.DAL.Models
                     RentEnds = r.RentEnds,
                     Price = r.Price,
                     Insurance = r.Insurance,
-                    State = r.State
-
-                }).First();
+                    State = r.State, 
+                    Finished = r.Finished
+                }).FirstOrDefault();
 
             return rent;
         }
 
-        public Boolean CreateRent(RentDetailsDTO _rent)
+        public void CreateRent(RentDetailsDTO _rent)
         {
 
             var rent = new CarRentModels.RentModel()
@@ -363,13 +383,26 @@ namespace CarRent.DAL.Models
                 RentStarts = _rent.RentStarts,
                 RentEnds = _rent.RentEnds,
                 Price = _rent.Price,
-                Insurance = _rent.Insurance,
-                State = EnumTypes.RentState.Pending
+                Insurance = EnumTypes.InsuranceType.Basic,
+                //Insurance = _rent.Insurance,
+                State = EnumTypes.RentState.Pending,
+                Finished = false
             };
+            
             context.Rents.Add(rent);
+
             context.SaveChanges();
-            // TODO check that the save was successful
-            return true;
+
+            //return rent.RentID;
+        }
+
+        public void FinishRent(int id)
+        {
+            var rent = context.Rents.Find(id);
+            rent.Finished = true;
+
+            context.Rents.Update(rent);
+            context.SaveChanges();
         }
 
         public void DeleteRent(int id)

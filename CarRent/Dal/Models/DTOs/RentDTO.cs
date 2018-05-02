@@ -11,6 +11,7 @@ namespace CarRent.DAL.Models.DTOs
         public CarModel Car { get; set; }
         public DateTime RentStarts { get; set; }
         public DateTime RentEnds { get; set; }
+        public bool Finished { get; set; }
         public EnumTypes.RentState State { get; set; }
     }
 }

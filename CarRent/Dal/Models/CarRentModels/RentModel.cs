@@ -12,6 +12,7 @@ namespace CarRent.DAL.Models.CarRentModels
         public DateTime RentStarts { get; set; }
         public DateTime RentEnds { get; set; }
         public int Price { get; set; }
+        public bool Finished { get; set; }
 
         public ApplicationUser User { get; set; }
         public CarModel Car { get; set; }

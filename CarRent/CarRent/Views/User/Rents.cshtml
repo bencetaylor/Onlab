@@ -1,4 +1,4 @@
-﻿@model IEnumerable<CarRent.Models.DataViewModels.RentViewModel>
+﻿@model CarRent.Models.DataViewModels.RentViewModel
 
 @{
     ViewData["Title"] = "Rents";
@@ -7,24 +7,46 @@
 
 <h2>Rents</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Car
+                </th>
+                <th>
+                    Starts
+                </th>
+                <th>
+                    Ends
+                </th>
+                <th>
+                    State
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Rents)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Car.NumberPlate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RentStarts.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RentEnds.Date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.State)
+                    </td>
+                    <td>
+                        <a asp-area="" asp-controller="Rent" asp-action="Details" asp-route-id="@item.RentID" class="btn btn-outline-dark btn-sm">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
