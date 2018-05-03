@@ -73,8 +73,8 @@ namespace CarRent.DAL.Data
             //// Csak egy mentés a végén, nehogy összeakadjon
             //context.SaveChanges();
             
-            var site1 = new SiteModel { Name = "Site1", Address = "Address1" };
-            var site2 = new SiteModel { Name = "Site2", Address = "Address2" };
+            var site1 = new SiteModel { Name = "Site1", Address = "Vecsés, Lőrinci u. 59, 2220" };
+            var site2 = new SiteModel { Name = "Site2", Address = "Budapest, Máriássy u. 5, 1095" };
             // Creating sites
             var sites = new SiteModel[]
             {

@@ -97,8 +97,53 @@
                 </div>
 
                 <h6>Location Map</h6>
-                <div class="row">
-                    @await Html.PartialAsync("../User/Maps")
+                <div class="row" onload="initialize()">
+                    @*@await Html.PartialAsync("../User/Maps")*@
+                    <div id="map" style="height: 400px; width: 100%; background-color: gray;"></div>
+                    <script>
+                        var map;
+                        var geocoder;
+                        //function initMap() {
+                        //    var uluru = { lat: 47.497912, lng: 19.040235 };
+                        //    map = new google.maps.Map(document.getElementById('map'), {
+                        //        zoom: 15,
+                        //        center: uluru
+                        //    });
+                        //    var marker = new google.maps.Marker({
+                        //        position: uluru,
+                        //        map: map
+                        //    });
+                        //}
+                        function initialize() {
+                            geocoder = new google.maps.Geocoder();
+                            var latlng = new google.maps.LatLng(47.497912, 19.040235);
+                            var mapOptions = {
+                                zoom: 15,
+                                center: latlng
+                            }
+                            map = new google.maps.Map(document.getElementById('map'), mapOptions);
+                        }
+
+                        function codeAddress() {
+                            var address = document.getElementById('address').value; @*"@Model.CarFullDetail.Location.Address";*@
+                                geocoder.geocode({ 'address': address }, function (results, status) {
+                                    if (status == 'OK') {
+                                        map.setCenter(results[0].geometry.location);
+                                        var marker = new google.maps.Marker({
+                                            map: map,
+                                            position: results[0].geometry.location
+                                        });
+                                    } else {
+                                        alert('Geocode was not successful for the following reason: ' + status);
+                                    }
+                                });
+                        }
+                    </script>
+                    <script async defer
+                            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8agkpEWRNjB5widoO_V5v2-cbO6GybkI&callback=initMap">
+                    </script>
+                    <input id="address" type="text" value="Sydney, NSW">
+                    <input type="button" value="Encode" onclick="codeAddress()">
                 </div>
             </div>
         </div>
