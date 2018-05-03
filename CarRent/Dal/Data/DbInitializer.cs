@@ -68,12 +68,15 @@ namespace CarRent.DAL.Data
             };
 
             context.UserRoles.Add(userRole);
-            
+
 
             //// Csak egy mentés a végén, nehogy összeakadjon
             //context.SaveChanges();
-            
+
+            //coords 47.416445, 19.241864
             var site1 = new SiteModel { Name = "Site1", Address = "Vecsés, Lőrinci u. 59, 2220" };
+
+            // coords 47.469843, 19.080126
             var site2 = new SiteModel { Name = "Site2", Address = "Budapest, Máriássy u. 5, 1095" };
             // Creating sites
             var sites = new SiteModel[]
