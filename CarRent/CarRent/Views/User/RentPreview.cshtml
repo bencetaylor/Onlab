@@ -13,6 +13,10 @@
         <div class="col-12">
             <table class="w-100 table">
                 <tr>
+                    <th>ID:</th>
+                    <th>@Model.RentDetails.RentID</th>
+                </tr>
+                <tr>
                     <th>Car:</th>
                     <td>@Model.RentDetails.Car.Brand</td>
                 </tr>
@@ -40,9 +44,9 @@
         </div>
     </div>
     <div class="row">
-        <a asp-controller="Rent" asp-action="FinishRent" asp-route="@Model.RentDetails.RentID" class="btn btn-primary btn-block">Confirm</a>
+        <a asp-area="" asp-controller="Rent" asp-action="FinishRent" asp-route-id="@Model.RentDetails.RentID" class="btn btn-primary btn-block">Confirm</a>
     </div>
 </div>
-<div>
-    <a asp-action="Index" class="btn btn-sm btn-outline-dark">Back to List</a>
+<div class="container">
+    <a asp-controller="Home" asp-action="Index" class="btn btn-sm btn-outline-dark">Back to List</a>
 </div>

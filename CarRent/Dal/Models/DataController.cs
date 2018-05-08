@@ -350,36 +350,40 @@ namespace CarRent.DAL.Models
         public RentDetailsDTO GetRent(int id)
         {
             var rent = context.Rents
-                .Where( r => r.RentID == id )
-                .Include( r => r.Car )
-                .Include( r => r.Site )
-                .Include( r => r.User )
-                .Select( r => new RentDetailsDTO()
-                {
-                    RentID = r.RentID,
-                    Car = r.Car,
-                    Site = r.Site,
-                    User = r.User,
-                    RentStarts = r.RentStarts,
-                    RentEnds = r.RentEnds,
-                    Price = r.Price,
-                    Insurance = r.Insurance,
-                    State = r.State, 
-                    Finished = r.Finished
-                }).FirstOrDefault();
+                //.Where(r => r.RentID == id)
+                .Include(r => r.Car)
+                .Include(r => r.Site)
+                .Include(r => r.User)
+                .Single(r => r.RentID == id);
 
-            return rent;
+            var _rent = new RentDetailsDTO()
+            {
+                RentID = rent.RentID,
+                Car = rent.Car,
+                Site = rent.Site,
+                User = rent.User,
+                RentStarts = rent.RentStarts,
+                RentEnds = rent.RentEnds,
+                Price = rent.Price,
+                Insurance = rent.Insurance,
+                State = rent.State,
+                Finished = rent.Finished
+            };
+
+            return _rent;
         }
 
-        public void CreateRent(RentDetailsDTO _rent)
+        public int CreateRent(RentDetailsDTO _rent)
         {
-
+            var user = context.Users.Single(u => u.Id == _rent.User.Id);
+            var car = context.Cars.Single(c => c.CarID == _rent.Car.CarID);
+            var site = context.Sites.Single(s => s.SiteID == _rent.Site.SiteID);
             var rent = new CarRentModels.RentModel()
             {
-                RentID = _rent.RentID,
-                Car = _rent.Car,
-                Site = _rent.Site,
-                User = _rent.User,
+                //RentID = _rent.RentID,
+                Car = car,
+                Site = site,
+                User = user,
                 RentStarts = _rent.RentStarts,
                 RentEnds = _rent.RentEnds,
                 Price = _rent.Price,
@@ -393,12 +397,13 @@ namespace CarRent.DAL.Models
 
             context.SaveChanges();
 
-            //return rent.RentID;
+            return rent.RentID;
         }
 
         public void FinishRent(int id)
         {
-            var rent = context.Rents.Find(id);
+            var rent = context.Rents.Single(r => r.RentID == id);
+
             rent.Finished = true;
 
             context.Rents.Update(rent);

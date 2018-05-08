@@ -9,6 +9,7 @@ using CarRent.Models;
 using CarRent.DAL.Models;
 using CarRent.DAL.Models.DTOs;
 using Microsoft.AspNetCore.Identity;
+using System.Text;
 
 namespace CarRent.Controllers
 {
@@ -75,11 +76,11 @@ namespace CarRent.Controllers
             {
                 return View("../Account/Login");
             }
-            if (!User.IsInRole("ADMIN"))
-            {
-                var errorModel = new ErrorViewModel();
-                return View("../Shared/Error", errorModel);
-            }
+            //if (!User.IsInRole("ADMIN"))
+            //{
+            //    var errorModel = new ErrorViewModel();
+            //    return View("../Shared/Error", errorModel);
+            //}
             model = new RentViewModel();
             model.Insurance = data.GetInsurence();
             model.RentDetails.Car = data.FindCar(carID);
@@ -91,37 +92,7 @@ namespace CarRent.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(RentViewModel model, int CarID)
         {
-            if (User.IsInRole("ADMIN"))
-            {
-                try
-                {
-                    if (ModelState.IsValid)
-                    {
-                        var rent = new RentDetailsDTO();
-
-                        rent.Car = data.GetCar(model.RentDetails.Car.NumberPlate);
-
-                        data.CreateRent(model.RentDetails);
-                        return RedirectToAction("Index");
-                    }
-                    return RedirectToAction(nameof(Index));
-                }
-                catch
-                {
-                    return View();
-                }
-            }
-            //else if (User.Identity.IsAuthenticated)
-            //{
-            //    var rent = new RentDetailsDTO();
-            //    rent.User = userManager.FindByNameAsync(User.Identity.Name).Result;
-            //    rent.Car = data.FindCar(model.RentDetails.Car.CarID);
-
-            //    rent.RentStarts = model.RentDetails.RentStarts;
-
-            //    return RedirectToAction(nameof(Index));
-            //}
-            else
+            if (User.Identity.IsAuthenticated)
             {
                 try
                 {
@@ -137,24 +108,26 @@ namespace CarRent.Controllers
                         model.RentDetails.Price = Convert.ToInt32((model.RentDetails.RentEnds - model.RentDetails.RentStarts).TotalDays) * car.Price;
                         model.RentDetails.Site = data.GetSiteByID(1);
 
-                        data.CreateRent(model.RentDetails);
+                        int RentID = data.CreateRent(model.RentDetails);
 
-                        return RedirectToAction("PreviewRent", "RentController", 1);
+                        return PreviewRent(RentID);
                     }
-                    //return RedirectToAction(nameof(Index));
                     var errorModel = new ErrorViewModel();
                     return View("../Shared/Error", errorModel);
                 }
-                catch
+                catch (Exception e)
                 {
                     var errorModel = new ErrorViewModel();
                     return View("../Shared/Error", errorModel);
                 }
             }
+            return View();
+
         }
 
         public ActionResult PreviewRent(int RentID)
         {
+            model = new RentViewModel();
             model.RentDetails = data.GetRent(RentID);
 
             return View("../User/RentPreview", model);
@@ -162,6 +135,8 @@ namespace CarRent.Controllers
         
         public ActionResult FinishRent(int RentID)
         {
+            // Ide valamiért 0 jön a rendes ID helyett
+            //RentID = 1022;
             data.FinishRent(RentID);
 
             return RedirectToAction("Index");

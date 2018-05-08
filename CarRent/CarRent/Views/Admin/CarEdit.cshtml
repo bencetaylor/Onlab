@@ -87,7 +87,7 @@
                             {
                                 <div class="img-wrap">
                                     <div class="deleteBtn">
-                                        <a asp-area="" asp-controller="Car" asp-action="DeleteImage" asp-route-id="@img.ImageID" class="delete">&times;</a>
+                                        <a data-id="@img.ImageID" class="delete">&times;</a>
                                     </div>
                                     <img src="~/images/@Model.CarFullDetail.NumberPlate/@img.Path" width="400" height="300">
                                 </div>
@@ -108,16 +108,19 @@
     <a asp-action="Index" class="btn btn-outline-dark btn-sm">Back to List</a>
 </div>
 
-@*<script type="text/javascript">
-    function DeleteImage(id) {
-        $.ajax({
-            type: "POST",
-            url: "",
-            data: id,
-            success: function (data) {
-                $("#summary")
-            }
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".deleteBtn a").on("click", function (e) {
+            let id = $(e.target).data().id;
+            $.ajax({
+                type: "POST",
+                url: "/Car/DeleteImage?id=" + id,
+                success: function (data) {
+                    console.log("Torolve");
+                    $(e.target).parent().parent().remove();
+                }
+            });
         });
-    }
-</script>*@
+     });
+</script>
 
