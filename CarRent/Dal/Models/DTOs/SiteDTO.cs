@@ -10,6 +10,8 @@ namespace CarRent.DAL.Models.DTOs
         public int SiteID { get; set; }
         public String Name { get; set; }
         public String Address { get; set; }
+        public double Lat { get; set; }
+        public double Lon { get; set; }
         public ICollection<CarRentModels.CarModel> Cars { get; set; }
     }
 }

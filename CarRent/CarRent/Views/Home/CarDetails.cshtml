@@ -97,14 +97,17 @@
                 </div>
 
                 <h6>Location Map</h6>
-                <div class="row" @*onload="initialize()"*@>
-                    @*@await Html.PartialAsync("../User/Maps")*@
+                <div class="row">
+                    <p id="lon" hidden value="@Model.CarFullDetail.Location.Lon"></p>
+                    <p id="lat" hidden>@Model.CarFullDetail.Location.Lat</p>
                     <div id="map" style="height: 400px; width: 100%; background-color: gray;"></div>
                     <script>
                         var map;
-                        //var geocoder;
                         function initMap() {
+                            @*var lon = '@Model.CarFullDetail.Location.Lon';
+                            var lat = '@Model.CarFullDetail.Location.Lat';*@
                             var uluru = new google.maps.LatLng(47.469843, 19.080126);
+                            //var uluru = new google.maps.LatLng(lat, lon);
                             map = new google.maps.Map(document.getElementById('map'), {
                                 zoom: 15,
                                 center: uluru
@@ -114,30 +117,6 @@
                                 map: map
                             });
                         }
-                        @*function initialize() {
-                            geocoder = new google.maps.Geocoder();
-                            var latlng = new google.maps.LatLng(47.469843, 19.080126);
-                            var mapOptions = {
-                                zoom: 15,
-                                center: latlng
-                            }
-                            map = new google.maps.Map(document.getElementById('map'), mapOptions);
-                        }
-
-                        function codeAddress() {
-                            var address = document.getElementById('address').value; "@Model.CarFullDetail.Location.Address";
-                                geocoder.geocode({ 'address': address }, function (results, status) {
-                                    if (status == 'OK') {
-                                        map.setCenter(results[0].geometry.location);
-                                        var marker = new google.maps.Marker({
-                                            map: map,
-                                            position: results[0].geometry.location
-                                        });
-                                    } else {
-                                        alert('Geocode was not successful for the following reason: ' + status);
-                                    }
-                                });
-                        }*@
                     </script>
                     <script async defer
                             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8agkpEWRNjB5widoO_V5v2-cbO6GybkI&callback=initMap">
