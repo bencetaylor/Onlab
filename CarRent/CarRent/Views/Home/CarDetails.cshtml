@@ -104,10 +104,9 @@
                     <script>
                         var map;
                         function initMap() {
-                            @*var lon = '@Model.CarFullDetail.Location.Lon';
-                            var lat = '@Model.CarFullDetail.Location.Lat';*@
-                            var uluru = new google.maps.LatLng(47.469843, 19.080126);
-                            //var uluru = new google.maps.LatLng(lat, lon);
+                            var lon = parseFloat('@Model.CarFullDetail.Location.Lon'.replace(',', '.'));
+                            var lat = parseFloat('@Model.CarFullDetail.Location.Lat'.replace(',', '.'));
+                            var uluru = new google.maps.LatLng(lat, lon);
                             map = new google.maps.Map(document.getElementById('map'), {
                                 zoom: 15,
                                 center: uluru
