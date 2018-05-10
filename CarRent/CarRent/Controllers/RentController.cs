@@ -133,11 +133,11 @@ namespace CarRent.Controllers
             return View("../User/RentPreview", model);
         }
         
-        public ActionResult FinishRent(int RentID)
+        public ActionResult FinishRent(int id)
         {
             // Ide valamiért 0 jön a rendes ID helyett
             //RentID = 1022;
-            data.FinishRent(RentID);
+            data.FinishRent(id);
 
             return RedirectToAction("Index");
         }
