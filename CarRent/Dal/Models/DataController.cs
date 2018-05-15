@@ -44,6 +44,26 @@ namespace CarRent.DAL.Models
             return cars;
         }
 
+        public IList<CarDTO> SearchCars(int[] searchValues)
+        {
+            var cars = context.Cars
+                .Include(c => c.Site)
+                .Include(c => c.Images)
+                .Where(c => c.Price >= searchValues[0] && c.Price <= searchValues[1] && c.Passangers >= searchValues[2] && c.Passangers <= searchValues[3])
+                .Select(c => new CarDTO
+                {
+                    CarID = c.CarID,
+                    Price = c.Price,
+                    Type = c.Type,
+                    Brand = c.Brand ?? "none",
+                    Location = c.Site.Address,
+                    NumberPlate = c.NumberPlate,
+                    Image = c.Images.FirstOrDefault()
+                }).ToList();
+
+            return cars;
+        }
+
         public IList<CarDTO> GetTopCars()
         {
             var cars = context.Cars

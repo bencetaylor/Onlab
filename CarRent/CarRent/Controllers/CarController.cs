@@ -8,6 +8,7 @@ using CarRent.Models;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO;
+using System;
 
 namespace CarRent.Controllers
 {
@@ -22,7 +23,7 @@ namespace CarRent.Controllers
         }
 
         // GET: Car
-        public ActionResult Index()
+        public ActionResult Index(string MinPrice, string MaxPrice, string MinPassanger, string MaxPassanger)
         {
             // Admin views
             if(User.IsInRole("ADMIN")){
@@ -38,7 +39,10 @@ namespace CarRent.Controllers
             else
             {
                 model = new CarViewModel();
-                var cars = data.GetCars();
+                //var cars = data.GetCars();
+
+                var cars = data.SearchCars(InitSearchValues(MinPrice, MaxPrice, MinPassanger, MaxPassanger));
+
                 foreach (var c in cars)
                 {
                     if (c.Image == null)
@@ -292,6 +296,45 @@ namespace CarRent.Controllers
 
             //return Redirect(DeleteImage.UrlReferrer.ToString());
             return RedirectToAction("Index");
+        }
+
+        public int[] InitSearchValues(string MinPrice, string MaxPrice, string MinPassanger, string MaxPassanger)
+        {
+            Int32[] res = new Int32[4];
+            if (String.IsNullOrEmpty(MinPrice))
+            {
+                res[0] = 0;
+            }
+            else
+            {
+                res[0] = Int32.Parse(MinPrice);
+            }
+            if (String.IsNullOrEmpty(MaxPrice))
+            {
+                res[1] = 1000000;
+            }
+            else
+            {
+                res[1] = Int32.Parse(MaxPrice);
+            }
+            if (String.IsNullOrEmpty(MinPassanger))
+            {
+                res[2] = 0;
+            }
+            else
+            {
+                res[2] = Int32.Parse(MinPassanger);
+            }
+            if (String.IsNullOrEmpty(MaxPassanger))
+            {
+                res[3] = 20;
+            }
+            else
+            {
+                res[3] = Int32.Parse(MaxPassanger);
+            }
+
+            return res;
         }
     }
 }
