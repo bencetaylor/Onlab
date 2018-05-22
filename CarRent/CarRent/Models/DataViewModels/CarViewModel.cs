@@ -12,12 +12,14 @@ namespace CarRent.Models.DataViewModels
         public List<CarDetailsDTO> CarsDetail;
         public List<String> Types;
         public List<SiteDTO> Sites;
+        public SearchViewModel SearchViewModel;
 
         [BindProperty]
         public CarDetailsDTO CarFullDetail { get; set; }
 
         public CarViewModel()
         {
+            SearchViewModel = new SearchViewModel();
             Cars = new List<CarDTO>();
             CarsDetail = new List<CarDetailsDTO>();
             CarFullDetail = new CarDetailsDTO();

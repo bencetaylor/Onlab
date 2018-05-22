@@ -30,8 +30,16 @@
                     </p>
                     <p>
                         Max: @Html.TextBox("MaxPassanger")
+                        @*<input asp-for="SearchViewModel.MaxPassanger" class="form-control" />*@
                     </p>
-                    <input type="submit" value="Search" />
+                    @*<p>
+                        Location:
+                    </p>
+
+                    <p>
+                        @Html.DropDownListFor(m => m.SearchViewModel.Site, new SelectList(Model.Sites, "SiteID", "Address"), "Select Location", new { @class = "form-control" })
+                    </p>*@
+                    <input type="submit" value="Search" class="btn btn-outline-dark" />
                 }
             </div>
         </div>

@@ -23,7 +23,7 @@ namespace CarRent.Controllers
         }
 
         // GET: Car
-        public ActionResult Index(string MinPrice, string MaxPrice, string MinPassanger, string MaxPassanger)
+        public ActionResult Index(string MinPrice, string MaxPrice, string MinPassanger, string MaxPassanger, CarViewModel model)
         {
             // Admin views
             if(User.IsInRole("ADMIN")){
@@ -39,9 +39,18 @@ namespace CarRent.Controllers
             else
             {
                 model = new CarViewModel();
-                //var cars = data.GetCars();
 
-                var cars = data.SearchCars(InitSearchValues(MinPrice, MaxPrice, MinPassanger, MaxPassanger));
+                //if(model == null)
+                //    model = new CarViewModel();
+                //var siteID = model.SearchViewModel.Site;
+
+                //if(siteID == 0)
+                //{
+                //    siteID = 0;
+                //}
+
+                var cars = data.SearchCars(InitSearchValues(MinPrice, MaxPrice, MinPassanger, MaxPassanger), 0);
+                //var cars = data.SearchCars(InitSearchValues(MinPrice, MaxPrice, MinPassanger, MaxPassanger), siteID);
 
                 foreach (var c in cars)
                 {
@@ -54,6 +63,10 @@ namespace CarRent.Controllers
                     }
                     model.Cars.Add(c);
                 }
+
+                var sites = data.GetSites();
+                model.Sites = sites;
+
                 return View("../User/Cars", model);
             }
         }
